@@ -11,7 +11,7 @@ from kasa import SmartPlug, Discover, Credentials
 
 
 async def main():
-	found_devices = asyncio.run(Discover.discover())
+	await found_devices = asyncio.run(Discover.discover())
 
 	print([dev.alias for dev in found_devices])
     # p = SmartPlug("127.0.0.1")
