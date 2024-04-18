@@ -1,5 +1,7 @@
 # Basic Scripts for Reading Sensors and Controlling Actuators
 
+Basic examples for reading data and controlling actuators in the system.
+
 ## Component List
 * INA219
 * INA260
