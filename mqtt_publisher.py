@@ -1,11 +1,21 @@
-import paho.mqtt.client as MQTT
+# this script is for testing aggregator commands
+
+import paho.mqtt.client as mqtt
 import asyncio
 from datetime import datetime
 from pytz import timezone
 import time
+import random
 
 BROKER = "test.mosquitto.org"
+CLIENT_ID = ""
 
+timezone = timezone('US/Eastern')
+
+
+eventNames = ['DLRP','CSRP']
+eventTypes = ['contingency','immediate']
+eventTimes = [11,14, 16, 17, 19]
 
 class EnergyController:
     def __init__(self, serial_number):
@@ -21,7 +31,7 @@ class EnergyController:
     def on_connect(self, client, userdata, flags, rc):
         print("Connected to ", client._host, "port: ", client._port)
         print("Flags: ", flags, "returned code: ", rc)
-        client.subscribe("OpenDemandResponse/Event/BoroughHall", qos=0)
+        client.subscribe("OpenDemandResponse/Participant/AlexN", qos=0)
         
     # The callback for when a message is published.
     def on_publish(self, client, userdata, mid):
@@ -30,24 +40,24 @@ class EnergyController:
     # The callback for when a message is received.
     def on_message(self, client, userdata, msg):
         message = str(msg.payload.decode("utf-8"))
-        if msg.topic == "OpenDemandResponse/Event/BoroughHall":
+        if msg.topic == "OpenDemandResponse/Participant/AlexN":
             event, event_type, start_time = message.split("#")
             if event_type == 'immediate':
                 #self.records[name] = uid
                 print("{} {} event {} starting at {}".format(event, event_type, start_time))
     
     def run(self):
-        self.client.connect(THE_BROKER, port=1883, keepalive=60)
+        self.client.connect(BROKER, port=1883, keepalive=60)
         self.client.loop_start()
         while True:
             #id_, name = self.reader.read()
-            dc_voltage = 4.99
-            dc_current = .51
+            event = eventNames[random.randint(0,len(eventNames)-1)]
+            event_type = eventTypes[random.randint(0,len(eventTypes)-1)]
+            start_time = eventTimes[random.randint(0,len(eventTimes)-1)]
             update = True
             if update:
-                #name = name.strip()
-                timestamp = datetime.now(eastern).strftime("%Y-%m-%d %H:%M:%S")
-                self.client.publish("OpenDemandResponse/Participant/AlexN", payload="#".join([dc_voltage, dc_current, timestamp]), qos=0, retain=False)
+                timestamp = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
+                self.client.publish("OpenDemandResponse/Event/BoroughHall", payload="#".join([event, event_type, str(start_time), timestamp]), qos=0, retain=False)
             time.sleep(3)
     
     def stop_tracking(self):

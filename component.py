@@ -7,7 +7,7 @@ import asyncio
 from bluetti_mqtt.bluetooth import (
     check_addresses, scan_devices, BluetoothClient, ModbusError,
     ParseError, BadConnectionError)
-import time
+import datetime
 
 class Data:
 	def __init__(self, ina260=False, ina219=False, dl=False, kasa=False, ct=False,):

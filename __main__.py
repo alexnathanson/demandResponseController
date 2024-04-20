@@ -19,7 +19,7 @@ async def main():
 
 
 	while True:
-		myData.setIna219(await component.ina219Get())
+		myData.setIna219(component.ina219Get())
 
 		await AC180.getData(myMac)
 		time.sleep(5)
