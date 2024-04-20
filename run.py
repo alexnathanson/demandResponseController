@@ -12,7 +12,7 @@ updateRate = 1
 async def main():
 	component = Component()
 	while True:
-		component.ina219Get()
+		await component.ina219Get()
 		asyncio.sleep(5)
 
 if __name__ == "__main__":
