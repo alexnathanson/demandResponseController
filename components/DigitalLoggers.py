@@ -15,17 +15,22 @@ import time
 
 GPIO.setmode(GPIO.BOARD)
 
-gPin = 18
+gPin = 23
 
-GPIO.setup(gPin, GPIO.OUT)
+try:
+    GPIO.setup(gPin, GPIO.OUT)
 
 
-GPIO.output(gPin, GPIO.HIGH)
-time.sleep(2)
-GPIO.output(gPin, GPIO.LOW)
-time.sleep(2)
-GPIO.output(gPin, GPIO.HIGH)
-time.sleep(2)
-GPIO.output(gPin, GPIO.LOW)
+    GPIO.output(gPin, GPIO.HIGH)
+    time.sleep(2)
+    GPIO.output(gPin, GPIO.LOW)
+    time.sleep(2)
+    GPIO.output(gPin, GPIO.HIGH)
+    time.sleep(2)
+    GPIO.output(gPin, GPIO.LOW)
 
-GPIO.cleanup()
+except:
+    print("Error")
+
+finally:
+    GPIO.cleanup()
