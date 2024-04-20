@@ -20,7 +20,7 @@ class EnergyController:
         self.client.on_log = self.on_log
         self.client.on_publish = self.on_publish
         self.client.on_message = self.on_message
-        self.client.tls_set("mosquitto/mosquitto.org.crt", tls_version=ssl.PROTOCOL_TLSv1_2)
+        self.client.tls_set("mosquitto/mosquitto.org.crt", certfile="keys/client.crt",keyfile="keys/client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
         self.client.username_pw_set(None, password=None)
         self.records = {}
     
@@ -51,10 +51,9 @@ class EnergyController:
                 print("{} {} event, starting at {}".format(event, event_type, start_time))
     
     def run(self):
-        self.client.connect(BROKER, port=8883, keepalive=60)
+        self.client.connect(BROKER, port=8884, keepalive=60)
         self.client.loop_start()
         while True:
-            #id_, name = self.reader.read()
             dc_voltage = str(4.99)
             dc_current = str(.51)
             update = True
