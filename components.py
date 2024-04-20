@@ -9,7 +9,7 @@ from bluetti_mqtt.bluetooth import (
     ParseError, BadConnectionError)
 
 class Component:
-	def __init__(self, ina260=False, ina219=False, dl=False, kasa=False, ct=False, mac):
+	def __init__(self, ina260=False, ina219=False, dl=False, kasa=False, ct=False, mac=False):
 		self.digitalloggers = dl
 		self.kasa = kasa
 		self.ct = ct
