@@ -1,11 +1,13 @@
-import paho.mqtt.client as MQTT
+import paho.mqtt.client as mqtt
 import asyncio
 from datetime import datetime
 from pytz import timezone
 import time
 
 BROKER = "test.mosquitto.org"
+CLIENT_ID = ""
 
+timezone = timezone('US/Eastern')
 
 class EnergyController:
     def __init__(self, serial_number):
@@ -31,18 +33,19 @@ class EnergyController:
     def on_message(self, client, userdata, msg):
         message = str(msg.payload.decode("utf-8"))
         if msg.topic == "OpenDemandResponse/Event/BoroughHall":
-            event, event_type, start_time = message.split("#")
+            print(message)
+            event, event_type, start_time,timestamp = message.split("#")
             if event_type == 'immediate':
                 #self.records[name] = uid
-                print("{} {} event {} starting at {}".format(event, event_type, start_time))
+                print("{} {} event, starting at {}".format(event, event_type, start_time))
     
     def run(self):
         self.client.connect(THE_BROKER, port=1883, keepalive=60)
         self.client.loop_start()
         while True:
             #id_, name = self.reader.read()
-            dc_voltage = 4.99
-            dc_current = .51
+            dc_voltage = str(4.99)
+            dc_current = str(.51)
             update = True
             if update:
                 #name = name.strip()

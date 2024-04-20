@@ -41,10 +41,9 @@ class EnergyController:
     def on_message(self, client, userdata, msg):
         message = str(msg.payload.decode("utf-8"))
         if msg.topic == "OpenDemandResponse/Participant/AlexN":
-            event, event_type, start_time = message.split("#")
-            if event_type == 'immediate':
-                #self.records[name] = uid
-                print("{} {} event {} starting at {}".format(event, event_type, start_time))
+            print('')
+            voltage, current, timestamp = message.split("#")
+            print("{}V {}A read at {}".format(voltage, current, timestamp))
     
     def run(self):
         self.client.connect(BROKER, port=1883, keepalive=60)
