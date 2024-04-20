@@ -18,9 +18,10 @@ GPIO.setmode(GPIO.BOARD)
 gPin = 23
 
 try:
+    print('Setting up...')
     GPIO.setup(gPin, GPIO.OUT)
 
-
+    print("Running...")
     GPIO.output(gPin, GPIO.HIGH)
     time.sleep(2)
     GPIO.output(gPin, GPIO.LOW)
@@ -33,4 +34,5 @@ except:
     print("Error")
 
 finally:
+    print('Cleaning up')
     GPIO.cleanup()
