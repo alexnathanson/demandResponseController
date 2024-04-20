@@ -1,5 +1,5 @@
 # 
-import components
+from components import Component
 import asyncio
 
 # frequency of logging in minutes
@@ -7,10 +7,10 @@ updateRate = 1
 
 #async def getBluetti():
 
-async def getINA219():
+#async def getINA219():
 
 async def main():
-	component = Components()
+	component = Component()
 	while True:
 		component.ina219Get()
 		asyncio.sleep(5)

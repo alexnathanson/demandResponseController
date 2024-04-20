@@ -4,7 +4,7 @@ import busio
 import adafruit_ina219
 
 class Component:
-	def __init__(self, ina260=False, ina219=False, dl=False, kasa=False, ct=False)
+	def __init__(self, ina260=False, ina219=False, dl=False, kasa=False, ct=False):
 		self.digitalloggers = digitalloggers
 		self.kasa = kasa
 		self.ct = ct
