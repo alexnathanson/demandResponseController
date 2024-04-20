@@ -7,6 +7,24 @@ import asyncio
 from bluetti_mqtt.bluetooth import (
     check_addresses, scan_devices, BluetoothClient, ModbusError,
     ParseError, BadConnectionError)
+import time
+
+class Data:
+	def __init__(self, ina260=False, ina219=False, dl=False, kasa=False, ct=False,):
+		self.timestamp = datetime.datetime.now().timestamp()
+		self.bluetti_name = None
+		self.bluetti_DC_in = None
+		self.bluetti_DC_out = None
+		self.bluetti_AC_in = None
+		self.bluetti_AC_out = None
+		self.ina219_voltage = 0
+		self.ina219_current = 0
+		self.ina219_power = 0
+
+	def setIna219(self, data):
+		self.ina219_voltage = data.voltage
+		self.ina219_current = data.current
+		self.ina219_power = data.power
 
 class Component:
 	def __init__(self, ina260=False, ina219=False, dl=False, kasa=False, ct=False, mac=False):
@@ -15,16 +33,20 @@ class Component:
 		self.ct = ct
 		self.i2c = busio.I2C(board.SCL,board.SDA)
 		self.ina219 = adafruit_ina219.INA219(self.i2c)
-		self.ina260 = adafruit_ina260.INA260(self.i2c)
+		#self.ina260 = adafruit_ina260.INA260(self.i2c)
 		self.mac = mac
 
-
 	async def ina219Get(self):
-		print("Bus Voltage: {} V".format(self.ina219.bus_voltage))
-		print("Shunt Voltage: {} mV".format(self.ina219.shunt_voltage / 1000))
-		print("Current: {} mA".format(self.ina219.current))
-		print("Power: {} W".format(self.ina219.power))
-
+		# print("Bus Voltage: {} V".format(self.ina219.bus_voltage))
+		# print("Shunt Voltage: {} mV".format(self.ina219.shunt_voltage / 1000))
+		# print("Current: {} mA".format(self.ina219.current))
+		# print("Power: {} W".format(self.ina219.power))
+		data = {
+			"voltage":self.ina219.bus_voltage,
+			"current":self.ina219.current,
+			"power":self.ina219.power
+		}
+		return data
 
 	async def ina260Get(self):
 		print(
