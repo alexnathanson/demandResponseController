@@ -3,6 +3,7 @@ import asyncio
 from datetime import datetime
 from pytz import timezone
 import time
+import ssl
 
 BROKER = "test.mosquitto.org"
 CLIENT_ID = ""
@@ -12,8 +13,7 @@ timezone = timezone('US/Eastern')
 network = "BoroughHall"
 
 class EnergyController:
-    def __init__(self, serial_number):
-        self.pi_number = str(serial_number)
+    def __init__(self):
         self.client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION1,client_id=CLIENT_ID, clean_session=True, userdata=None, protocol=mqtt.MQTTv311, transport="tcp")
         self.client.on_connect = self.on_connect
         self.client.on_connect_fail = self.on_connect_fail
@@ -34,7 +34,6 @@ class EnergyController:
         print("Failed to connect")
 
     def on_log(self, client, userdata, level, buf):
-        print('log!')
         print(level)
         print(buf)
 
@@ -70,5 +69,5 @@ class EnergyController:
         self.client.disconnect()
 
 if __name__ == '__main__':
-    controller = EnergyController(1)
+    controller = EnergyController()
     controller.run()

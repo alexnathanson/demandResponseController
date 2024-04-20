@@ -19,14 +19,13 @@ eventTypes = ['contingency','immediate']
 eventTimes = [11,14, 16, 17, 19]
 
 class EnergyController:
-    def __init__(self, serial_number):
-        self.pi_number = str(serial_number)
+    def __init__(self):
         self.client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION1,client_id=CLIENT_ID, clean_session=True, userdata=None, protocol=mqtt.MQTTv311, transport="tcp")
         self.client.on_connect = self.on_connect
         self.client.on_publish = self.on_publish
         self.client.on_message = self.on_message
         self.client.username_pw_set(None, password=None)
-        self.client.tls_set("mosquitto/mosquitto.org.crt", tls_version=ssl.PROTOCOL_TLSv1_2) #needed for ports 8883 and 8884
+        self.client.tls_set(ca_certs="keys/mosquitto.org.crt", certfile="keys/client.crt",keyfile="keys/client.key", tls_version=ssl.PROTOCOL_TLSv1_2) #needed for ports 8883 and 8884
         self.records = {}
     
     # The callback for when the client receives a CONNACK response from the server.
@@ -48,7 +47,7 @@ class EnergyController:
             print("{}V {}A read at {}".format(voltage, current, timestamp))
     
     def run(self):
-        self.client.connect(BROKER, port=8883, keepalive=60)
+        self.client.connect(BROKER, port=8884, keepalive=60)
         self.client.loop_start()
         while True:
             #id_, name = self.reader.read()
@@ -66,5 +65,5 @@ class EnergyController:
         self.client.disconnect()
 
 if __name__ == '__main__':
-    controller = EnergyController(1)
+    controller = EnergyController()
     controller.run()

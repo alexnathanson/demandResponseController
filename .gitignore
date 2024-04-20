@@ -2,3 +2,6 @@
 *.sublime-workspace
 
 venv/*
+
+client.crt
+client.key
