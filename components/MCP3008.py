@@ -1,9 +1,12 @@
 
+'''
 # MCP3008 code sourced  https://github.com/adafruit/Adafruit_CircuitPython_MCP3xxx
 # Irms calculation function based on:
-# EmonLib's calcIrms() function (source: https://github.com/openenergymonitor/EmonLib/blob/master/EmonLib.cpp)
-# and this Python implementation of it (source: https://www.engineersgarage.com/non-invasive-current-sensor-with-arduino/)
-
+# EmonLib's calcIrms() function sources:
+* https://github.com/openenergymonitor/EmonLib/blob/master/EmonLib.cpp)
+* https://community.openenergymonitor.org/t/raspberry-pi-zero-current-energy-monitor-issues/6560/5
+* https://www.engineersgarage.com/non-invasive-current-sensor-with-arduino/
+'''
 import busio
 import digitalio
 import board
@@ -24,7 +27,7 @@ mcp = MCP.MCP3008(spi,cs)
 # create analog input channel
 number_of_ct = 1  # the number of sensors (they should start at pin 0)
 chan0 = AnalogIn(mcp, MCP.P0)
-chan1 = AnalogIn(mcp, MCP.P1)
+#chan1 = AnalogIn(mcp, MCP.P1)
 
 '''
 # MCP
@@ -71,6 +74,46 @@ rms    = [0]*number_of_ct
 # primaryCoil = 30
 # secondaryCoil = .015
 # offsetI = supplyV / 2
+
+# =======================================================================================================
+# source https://community.openenergymonitor.org/t/raspberry-pi-zero-current-energy-monitor-issues/6560/5
+# auth: Maxwell (Bm2016) 
+# adapted for MCP3008 library by Alex Nathanson 
+def maxwellsIrms(adc_samples = 6000, ref_voltage = 3300, ref_ical=15):
+    NUMBER_OF_SAMPLES = adc_samples
+    SUPPLYVOLTAGE = ref_voltage ## 3300=3.3v 5000=5.0v
+    ICAL = ref_ical
+    sumI = 0
+    resolution = 2 ** 16
+    sampleI = resolution / 2 
+    filteredI = 0
+
+    for n in range (0, NUMBER_OF_SAMPLES):
+        lastSampleI = sampleI
+        ## sampleI = readadc(cts, SPICLK, SPIMOSI, SPIMISO, SPICS)
+        values[i] = chan0.value
+        sampleI = values[i]
+        array[n] = sampleI
+        sampleI=values[i]
+        ## for debug only, print all 6000 values read from MCP3008 ch0
+        if i == 0:
+             print(sampleI, end='') 
+             print(' ',end='')
+        ## end of debug
+        lastFilteredI = filteredI
+        filteredI = 0.996*(lastFilteredI+sampleI-lastSampleI)
+        sqI = filteredI * filteredI
+        sumI += sqI           
+        sampleI_old = sampleI    
+
+    I_RATIO = ICAL * ((SUPPLYVOLTAGE/1000.0) / resolution)
+    Irms = I_RATIO * math.sqrt(sumI / NUMBER_OF_SAMPLES)
+    sumI = 0
+    rms[i] = round((Irms),2)
+    ## print a new separation line
+    return Irms
+# end of Maxwell's RMS calculation
+# =======================================================================================================
 
 #built-in burden resistor
 def calcIrms_blueCT():
@@ -160,5 +203,4 @@ while True:
         # print('Raw | {0:>4} | {1:>4} |'.format(*values), end='')
         # print('AMP | {0:>4} | {1:>4} |'.format(*rms))
     print("Irms: " + str(calcIrms_blueCT()))
-    #print(chan1.voltage)
     time.sleep(2)
