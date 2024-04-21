@@ -7,8 +7,11 @@ import board
 import busio
 import adafruit_ina260
 import adafruit_ina219
+#import digitalio
+#import adafruit_mcp3xxx.mcp3008 as MCP
+#from adafruit_mcp3xxx.analog_in import AnalogIn
+import math
 import componentClasses.MCP3008 as MCP3008 
-
 
 # =========================================================================
 # Initialize Adafruit Power Sensors
@@ -17,28 +20,6 @@ i2c = busio.I2C(board.SCL, board.SDA)
 ina219 = adafruit_ina219.INA219(i2c_bus = i2c,addr =0x40)
 ina260 = adafruit_ina260.INA260(i2c_bus = i2c,address = 0x44)
 # =========================================================================
-
-
-# ===========================================================================================================
-# Initialize MCP & CT sensor
-# MCP3008 code source: https://github.com/adafruit/Adafruit_CircuitPython_MCP3xxx
-
-#create SPI bus
-spi = busio.SPI(clock=board.SCK, MISO=board.MISO,MOSI=board.MOSI)
-#create the chip select
-cs = digitalio.DigitalInOut(board.D5)
-# create mcp object
-mcp = MCP.MCP3008(spi,cs)
-
-# create analog input channel
-chan0 = AnalogIn(mcp, MCP.P0) #pin 0
-#chan1 = AnalogIn(mcp, MCP.P1)
-
-RESOLUTION = 2 ** 16 #the mcp3008 is 10 bit, but the Adafruit libary is 16 bit
-SUPPLYVOLTAGE = 3.3
-# ===========================================================================================================
-
-
 
 # frequency of logging in minutes
 updateRate = 1
