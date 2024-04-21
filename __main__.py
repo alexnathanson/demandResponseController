@@ -7,6 +7,7 @@ import board
 import busio
 import adafruit_ina260
 import adafruit_ina219
+import componentClasses.MCP3008 as MCP3008 
 
 
 # =========================================================================
@@ -66,12 +67,16 @@ async def INA(freq):
 		await asyncio.sleep(freq)
 
 async def main():
+	ct = Current_Transformer()
+
 	#myData = Data()
 
 	while True:
 		#myData.setIna219(component.ina219Get())
 		await INA(5)
 		#await AC180.getData(myMac)
+		await ct.run(10)
+
 		time.sleep(5)
 
 		print(myData)

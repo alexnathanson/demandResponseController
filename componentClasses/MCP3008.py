@@ -8,7 +8,7 @@ import adafruit_mcp3xxx.mcp3008 as MCP
 from adafruit_mcp3xxx.analog_in import AnalogIn
 import time
 import math
-
+import asyncio
 
 class Current_Transformer:
     def __init__(self,zOff = 0.0215):
@@ -32,11 +32,11 @@ class Current_Transformer:
     * https://github.com/openenergymonitor/EmonLib/blob/master/EmonLib.cpp
     '''
     # Note that this function uses a CT with a built-in burden resistor
-    def maxwellsIrms(self):
+    def irms(self):
         NUMBER_OF_SAMPLES = self.adc_samples
         VCAL = self.ref_vcal        
         IVratio = self.ref_ical / VCAL #max rated current/ output voltage at that current
-        ICAL = ref_ical #the max current of the sensor
+        ICAL = self.ref_ical #the max current of the sensor
         sumI = 0
         sampleI = self.resolution / 2 
         filteredI = 0
@@ -53,10 +53,14 @@ class Current_Transformer:
         Irms = I_RATIO * math.sqrt(sumI / self.adc_samples)
         return Irms - self.zOffset #zOffset should be integrated into the filtering line in the future, not tacked on at the end...
 
+    async def run(freq):
+        print(self.irms())
+        await asyncio.sleep(freq)
+
 def main():
     ct = Current_Transformer()
     while True:
-        print("Irms: {} Amps".format(str(ct.maxwellsIrms())))
+        print("Irms: {} Amps".format(str(ct.irms())))
         time.sleep(2)
 
 if __name__ == "__main__":
