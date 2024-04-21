@@ -43,7 +43,8 @@ def maxwellsIrms(adc_samples = 6000, ref_ical=15, ref_vcal = 1):
     sumI = 0
     sampleI = RESOLUTION / 2 
     filteredI = 0
-    zOffset = 0.059 #to determine zOffset, set to 0.0 and run program with no load. Change this to what the Irms reports when it should be 0A
+    #zOffset should be integrated into the filtering line in the future, not tacked on at the end...
+    zOffset = 0.0215 #to determine zOffset, set to 0.0 and run program with no load. Change this to what the Irms reports when it should be 0A
     for n in range (0, NUMBER_OF_SAMPLES):
         lastSampleI = sampleI
         sampleI = chan0.value
@@ -56,7 +57,7 @@ def maxwellsIrms(adc_samples = 6000, ref_ical=15, ref_vcal = 1):
     I_RATIO = ICAL * (SUPPLYVOLTAGE / RESOLUTION)
     Irms = I_RATIO * math.sqrt(sumI / NUMBER_OF_SAMPLES)
     return Irms - zOffset
-# end of Maxwell's RMS calculation
+# end RMS calculation
 # =======================================================================================================
 
 def main():

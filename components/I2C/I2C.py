@@ -18,11 +18,6 @@ import busio
 import adafruit_ina260
 import adafruit_ina219
 
-# scan all I2C Devices
-# source: https://learn.adafruit.com/circuitpython-basics-i2c-and-spi/i2c-devices
-REGISTERS = (0, 256) # Range of registers to read from
-REGISTER_SIZE = 2 #Number of bytes to read from each register
-
 # Initialize
 i2c = busio.I2C(board.SCL, board.SDA)
 
