@@ -11,7 +11,7 @@ import adafruit_ina219
 #import adafruit_mcp3xxx.mcp3008 as MCP
 #from adafruit_mcp3xxx.analog_in import AnalogIn
 import math
-import componentClasses.MCP3008 as MCP3008 
+from componentClasses.Current_Transformer import Current_Transformer as CT 
 
 # =========================================================================
 # Initialize Adafruit Power Sensors
@@ -48,7 +48,7 @@ async def INA(freq):
 		await asyncio.sleep(freq)
 
 async def main():
-	ct = Current_Transformer()
+	ct = CT()
 
 	#myData = Data()
 
