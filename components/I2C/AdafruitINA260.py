@@ -5,11 +5,13 @@
 
 import time
 import board
-#import busio
+import busio
 import adafruit_ina260
 
 i2c = busio.I2C(board.SCL, board.SDA)
-ina260 = adafruit_ina260.INA260(i2c)
+
+#default addrss is 40
+ina260 = adafruit_ina260.INA260(i2c_bus=i2c,address=0x44)
 
 while True:
     print(
