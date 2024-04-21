@@ -61,11 +61,14 @@ async def main():
 
 	#myData = Data()
 
-	loop = asyncio.get_event_loop()
-	loop.create_task(INA(5))
-	loop.create_task(ct.run(10))
-	loop.create_task(log(60))
-	loop.run_forever()
+	t1 = asyncio.create_task(INA(5))
+	t2 = asyncio.create_task(ct.run(10))
+	t3 = asyncio.create_task(log(60))
+	#loop.run_forever()
+	
+	await t1
+	await t2
+	await t3
 
 if __name__ == "__main__":
     asyncio.run(main())
