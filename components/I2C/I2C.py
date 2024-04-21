@@ -29,7 +29,7 @@ i2c = busio.I2C(board.SCL, board.SDA)
 ina219 = adafruit_ina219.INA219(i2c_bus = i2c,addr =0x40)
 ina260 = adafruit_ina260.INA260(i2c_bus = i2c,address = 0x44)
 
-while len(devices) >= 1:
+while True:
     print('')
     print('***  260 ***')
     print(
@@ -43,5 +43,5 @@ while len(devices) >= 1:
         "Current: %.2f mA Voltage: %.2f V Power:%.2f mW"
         % (ina219.current, ina219.bus_voltage, ina219.power)
     )
-    
+
     time.sleep(2)
