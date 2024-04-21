@@ -1,10 +1,5 @@
+# A script for reading a CT sensor (with built in burden resistor) via MCP3008 ADC for Raspberry Pi
 
-'''
-# MCP3008 code sourced  https://github.com/adafruit/Adafruit_CircuitPython_MCP3xxx
-# EmonLib's calcIrms() function sources:https://github.com/openenergymonitor/EmonLib/blob/master/EmonLib.cpp)
-* https://community.openenergymonitor.org/t/raspberry-pi-zero-current-energy-monitor-issues/6560/5
-* https://www.engineersgarage.com/non-invasive-current-sensor-with-arduino/
-'''
 import busio
 import digitalio
 import board
@@ -13,41 +8,42 @@ from adafruit_mcp3xxx.analog_in import AnalogIn
 import time
 import math
 
+# ===========================================================================================================
+# MCP3008 code source: https://github.com/adafruit/Adafruit_CircuitPython_MCP3xxx
 #create SPI bus
 spi = busio.SPI(clock=board.SCK, MISO=board.MISO,MOSI=board.MOSI)
-
 #create the chip select
 cs = digitalio.DigitalInOut(board.D5)
-
 # create mcp object
 mcp = MCP.MCP3008(spi,cs)
+# ===========================================================================================================
 
 # create analog input channel
-number_of_ct = 1  # the number of sensors (they should start at pin 0)
-chan0 = AnalogIn(mcp, MCP.P0)
+chan0 = AnalogIn(mcp, MCP.P0) #pin 0
 #chan1 = AnalogIn(mcp, MCP.P1)
 
 RESOLUTION = 2 ** 16 #the mcp3008 is 10 bit, but the Adafruit libary is 16 bit
 SUPPLYVOLTAGE = 3.3
+
 # =======================================================================================================
-# source https://community.openenergymonitor.org/t/raspberry-pi-zero-current-energy-monitor-issues/6560/5
-# orig auth: Maxwell (Bm2016) 
-# adapted for Adafruit MCP3008 library by Alex Nathanson 
-#built-in burden resistor
+'''
+This Irms function comes from Open Energy Monitor user Bm2016 who based it on  EmonLib's calcIrms().
+I have simplified it a little and adapted it for use with Adafruit's MCP3008 library. 
+sources:
+* https://community.openenergymonitor.org/t/raspberry-pi-zero-current-energy-monitor-issues/6560/5
+* https://github.com/openenergymonitor/EmonLib/blob/master/EmonLib.cpp
+'''
+# Note that this function uses a CT with a built-in burden resistor
 def maxwellsIrms(adc_samples = 6000, ref_ical=15, ref_vcal = 1):
     NUMBER_OF_SAMPLES = adc_samples
     #Vsupply = SUPPLYVOLTAGE * 1000 ## 3300=3.3v 5000=5.0v
-    burden = False #set to burden resistor ohms or False if no resistor present
-    if burden:
-        VCAL = ref_vcal / burden
-    else:
-        VCAL = ref_vcal
+    VCAL = ref_vcal        
     IVratio = ref_ical / VCAL #max rated current/ output voltage at that current
     ICAL = ref_ical #the max current of the sensor
     sumI = 0
     sampleI = RESOLUTION / 2 
     filteredI = 0
-    zOffset = .0 #change this to what the Irms reports when it should be 0A
+    zOffset = 0.059 #to determine zOffset, set to 0.0 and run program with no load. Change this to what the Irms reports when it should be 0A
     for n in range (0, NUMBER_OF_SAMPLES):
         lastSampleI = sampleI
         sampleI = chan0.value
@@ -63,40 +59,10 @@ def maxwellsIrms(adc_samples = 6000, ref_ical=15, ref_vcal = 1):
 # end of Maxwell's RMS calculation
 # =======================================================================================================
 
-# def calcIrms_greyCT():
-#     sampleNum = 6000
-#     supplyV = 3.3
-#     burden = 78
-#     maxI = 30
-#     Iratio = maxI/.015
-#     ICAL = Iratio/burden
-#     maxV = .015 * burden
-#     #print(maxV)
-#     ampsToV = maxV / maxI
-#     sumI =0
-#     sixteenbit = 2 ** 16
-#     print('raw: ' + str(chan0.voltage))
-#     offsetI = supplyV / 2
-#     for n in range (0, sampleNum):
-#         #lastSampleI = sampleI
-#         sampleI = chan0.voltage
-#         #print(sampleI)
-#         #lastFilteredI = filteredI
-#         offsetI = (offsetI + ((sampleI - offsetI) / supplyV))
-#         filteredI = sampleI - offsetI
-#         #filteredI = 0.996*(lastFilteredI+sampleI-lastSampleI)
-#         sqI = filteredI * filteredI
-#         sumI += sqI
-#     I_RATIO = 100* ICAL * ampsToV
-#     Irms = I_RATIO * math.sqrt(sumI/sampleNum)
-#     #sumI = 0
-#     return Irms
-
 def main():
     while True:
         print("Irms: {} Amps".format(str(maxwellsIrms())))
         time.sleep(2)
-
 
 if __name__ == "__main__":
     main()
