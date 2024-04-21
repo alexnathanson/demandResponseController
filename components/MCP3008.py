@@ -87,18 +87,14 @@ def maxwellsIrms(adc_samples = 6000, ref_voltage = 3300, ref_ical=15):
     resolution = 2 ** 16
     sampleI = resolution / 2 
     filteredI = 0
-
+    zOffset = .057
     for n in range (0, NUMBER_OF_SAMPLES):
         lastSampleI = sampleI
-        ## sampleI = readadc(cts, SPICLK, SPIMOSI, SPIMISO, SPICS)
-        values[i] = chan0.value
-        sampleI = values[i]
-        array[n] = sampleI
-        sampleI=values[i]
+        sampleI = chan0.value
         ## for debug only, print all 6000 values read from MCP3008 ch0
-        if i == 0:
-             print(sampleI, end='') 
-             print(' ',end='')
+        # if i == 0:
+        #      print(sampleI, end='') 
+        #      print(' ',end='')
         ## end of debug
         lastFilteredI = filteredI
         filteredI = 0.996*(lastFilteredI+sampleI-lastSampleI)
@@ -108,10 +104,8 @@ def maxwellsIrms(adc_samples = 6000, ref_voltage = 3300, ref_ical=15):
 
     I_RATIO = ICAL * ((SUPPLYVOLTAGE/1000.0) / resolution)
     Irms = I_RATIO * math.sqrt(sumI / NUMBER_OF_SAMPLES)
-    sumI = 0
-    rms[i] = round((Irms),2)
-    ## print a new separation line
-    return Irms
+    #sumI = 0
+    return Irms - zOffset
 # end of Maxwell's RMS calculation
 # =======================================================================================================
 
