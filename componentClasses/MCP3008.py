@@ -11,17 +11,18 @@ import math
 
 
 class Current_Transformer:
-    def __init__(self):
+    def __init__(self,zOff = 0.0215):
         self.spi = busio.SPI(clock=board.SCK, MISO=board.MISO,MOSI=board.MOSI) # create SPI bus
         self.cs = digitalio.DigitalInOut(board.D5) # create the chip select
         self.mcp = MCP.MCP3008(self.spi,self.cs) # create mcp object
-        self.chan0 = AnalogIn(mcp, MCP.P0) # create analog input channel on pin 0
+        self.chan0 = AnalogIn(self.mcp, MCP.P0) # create analog input channel on pin 0
         #self.chan1 = AnalogIn(mcp, MCP.P1)
         self.resolution = 2 ** 16 #the mcp3008 is 10 bit, but the Adafruit libary is 16 bit
         self.supplyV = 3.3
         self.adc_samples = 6000
         self.ref_ical=15
         self.ref_vcal = 1
+        self.zOffset = zOff #to determine zOffset, set to 0.0 and run program with no load. Change this to what the Irms reports when it should be 0A
 
     '''
     This Irms function comes from Open Energy Monitor user Bm2016 who based it on  EmonLib's calcIrms().
@@ -39,8 +40,6 @@ class Current_Transformer:
         sumI = 0
         sampleI = self.resolution / 2 
         filteredI = 0
-        #zOffset should be integrated into the filtering line in the future, not tacked on at the end...
-        zOffset = 0.0215 #to determine zOffset, set to 0.0 and run program with no load. Change this to what the Irms reports when it should be 0A
         for n in range (0, self.adc_samples):
             lastSampleI = sampleI
             sampleI = self.chan0.value
@@ -50,9 +49,9 @@ class Current_Transformer:
             sumI += sqI           
             sampleI_old = sampleI    
 
-    I_RATIO = ICAL * (self.supplyV / self.resolution)
-    Irms = I_RATIO * math.sqrt(sumI / self.adc_samples)
-    return Irms - zOffset
+        I_RATIO = ICAL * (self.supplyV / self.resolution)
+        Irms = I_RATIO * math.sqrt(sumI / self.adc_samples)
+        return Irms - self.zOffset #zOffset should be integrated into the filtering line in the future, not tacked on at the end...
 
 def main():
     ct = Current_Transformer()
