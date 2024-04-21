@@ -60,7 +60,7 @@ async def actuate(freq):
 
 	while True:
 		dl.switchState()
-		await.asyncio.sleep(freq)
+		await asyncio.sleep(freq)
 
 # this packages up all the data for MQTT publishing
 async def log(freq):
