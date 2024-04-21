@@ -94,11 +94,12 @@ def calibrate():
     vOff = 0
     samples = 6000
     for i in range(0,samples):
-       vOff += abs(vIdeal - chan0.voltage)
+       vD = vIdeal - chan0.voltage
+       vOff += (vD * vD)
 
-    vOff = vOff/samples
+    vOff = math.sqrt(vOff)/samples
 
-    print("Offset when reading at 0 amps: {}V" {}(vOff))
+    print("Offset when reading at 0 amps: {}V".format(vOff))
     # print("%")
     # perOff = vOff / offsetI
     # print(1 - perOff)
@@ -106,7 +107,7 @@ def calibrate():
 
 def main():
     while True:
-        print("Irms: {} Amps" {} str(maxwellsIrms()))
+        print("Irms: {} Amps".format(str(maxwellsIrms())))
         time.sleep(2)
 
 
