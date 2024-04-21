@@ -54,6 +54,7 @@ class Current_Transformer:
         return Irms - self.zOffset #zOffset should be integrated into the filtering line in the future, not tacked on at the end...
 
     async def run(freq):
+        print('running CT')
         print(self.irms())
         await asyncio.sleep(freq)
 
