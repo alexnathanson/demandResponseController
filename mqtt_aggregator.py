@@ -46,18 +46,29 @@ class EnergyController:
             voltage, current, timestamp = message.split("#")
             print("{}V {}A read at {}".format(voltage, current, timestamp))
     
+    # returns some key
+    def auth(self):
+        return gfdgsdfhsdfsjdf
+
     def run(self):
         self.client.connect(BROKER, port=8884, keepalive=60)
         self.client.loop_start()
+        authUpdate = False
         while True:
-            #id_, name = self.reader.read()
             event = eventNames[random.randint(0,len(eventNames)-1)]
             event_type = eventTypes[random.randint(0,len(eventTypes)-1)]
             start_time = eventTimes[random.randint(0,len(eventTimes)-1)]
+
+            # update key when first connected
+            if authUpdate:
+                a = self.auth()
+                self.client.publish("OpenDemandResponse/Auth", payload=a, qos=0, retain=False)
+                authUpdate = False
             update = True
             if update:
                 timestamp = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
                 self.client.publish("OpenDemandResponse/Event/BoroughHall", payload="#".join([event, event_type, str(start_time), timestamp]), qos=0, retain=False)
+
             time.sleep(3)
     
     def stop_tracking(self):

@@ -5,3 +5,4 @@ venv/*
 
 client.crt
 client.key
+client.csr

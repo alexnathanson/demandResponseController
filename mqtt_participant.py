@@ -1,3 +1,5 @@
+# this script is for aggregation participants
+
 import paho.mqtt.client as mqtt
 import asyncio
 from datetime import datetime
@@ -17,10 +19,10 @@ class EnergyController:
         self.client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION1,client_id=CLIENT_ID, clean_session=True, userdata=None, protocol=mqtt.MQTTv311, transport="tcp")
         self.client.on_connect = self.on_connect
         self.client.on_connect_fail = self.on_connect_fail
-        self.client.on_log = self.on_log
+        #self.client.on_log = self.on_log
         self.client.on_publish = self.on_publish
         self.client.on_message = self.on_message
-        self.client.tls_set("mosquitto/mosquitto.org.crt", certfile="keys/client.crt",keyfile="keys/client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
+        self.client.tls_set(ca_certs="keys/mosquitto.org.crt", certfile="keys/client.crt",keyfile="keys/client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
         self.client.username_pw_set(None, password=None)
         self.records = {}
     
