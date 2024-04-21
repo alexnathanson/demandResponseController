@@ -61,7 +61,7 @@ class Current_Transformer:
 
 def main():
     ct = Current_Transformer()
-    await ct.run(5)
+    asyncio.run(ct.run(5))
     print('awaiting!')
 
 if __name__ == "__main__":

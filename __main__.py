@@ -12,7 +12,7 @@ import adafruit_ina219
 #import adafruit_mcp3xxx.mcp3008 as MCP
 #from adafruit_mcp3xxx.analog_in import AnalogIn
 import math
-#from componentClasses.component import INA
+from componentClasses.component import DigitalLogger as DL
 from componentClasses.currentTransformer import Current_Transformer as CT 
 
 # =========================================================================
@@ -33,6 +33,10 @@ updateRate = 1
 #async def getINA219():
 myMac = 'DC:8A:6F:FD:79:66'
 
+
+GPIO.setmode(GPIO.BCM)
+gPin = 23
+
 async def INA(freq):
 	pv = {}
 	rpi = {}
@@ -51,6 +55,14 @@ async def INA(freq):
 		print(rpi)
 		await asyncio.sleep(freq)
 
+async def actuate(freq):
+	dl = DL()
+
+	while True:
+		dl.switchState()
+		await.asyncio.sleep(freq)
+
+# this packages up all the data for MQTT publishing
 async def log(freq):
 	while True:
 		print('logging!')
@@ -59,16 +71,19 @@ async def log(freq):
 async def main():
 	ct = CT()
 
+
 	#myData = Data()
 
 	t1 = asyncio.create_task(INA(5))
 	t2 = asyncio.create_task(ct.run(10))
 	t3 = asyncio.create_task(log(60))
+	t4 = asyncio.create_task(actuate(10))
 	#loop.run_forever()
-	
+
 	await t1
 	await t2
 	await t3
+	await t4
 
 if __name__ == "__main__":
     asyncio.run(main())
