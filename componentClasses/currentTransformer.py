@@ -53,16 +53,16 @@ class Current_Transformer:
         Irms = I_RATIO * math.sqrt(sumI / self.adc_samples)
         return Irms - self.zOffset #zOffset should be integrated into the filtering line in the future, not tacked on at the end...
 
-    async def run(freq):
-        print('running CT')
-        print(self.irms())
-        await asyncio.sleep(freq)
+    async def run(self, freq=10):
+        print('looping CT...')
+        while True:
+            print("Irms: {} Amps".format(str(ct.irms())))
+            await asyncio.sleep(freq)
 
 def main():
     ct = Current_Transformer()
-    while True:
-        print("Irms: {} Amps".format(str(ct.irms())))
-        time.sleep(2)
+    await ct.run(5)
+    print('awaiting!')
 
 if __name__ == "__main__":
     main()

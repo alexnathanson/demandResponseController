@@ -51,20 +51,21 @@ async def INA(freq):
 		print(rpi)
 		await asyncio.sleep(freq)
 
+async def log(freq):
+	while True:
+		print('logging!')
+		await asyncio.sleep(freq)
+
 async def main():
 	ct = CT()
 
 	#myData = Data()
 
-	while True:
-		#myData.setIna219(component.ina219Get())
-		await INA(5)
-		#await AC180.getData(myMac)
-		await ct.run(10)
-
-		time.sleep(5)
-
-		print(myData)
+	loop = asyncio.get_event_loop()
+	loop.create_task(INA(5))
+	loop.create_task(ct.run(10))
+	loop.create_task(log(60))
+	loop.run_forever()
 
 if __name__ == "__main__":
     asyncio.run(main())
