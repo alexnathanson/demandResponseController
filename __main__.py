@@ -1,6 +1,4 @@
-# 
 import asyncio
-#import components.Bluetti.AC180 as AC180
 import time
 from pytz import timezone
 from datetime import datetime
@@ -14,6 +12,7 @@ import adafruit_ina219
 import math
 from componentClasses.component import DigitalLogger as DL
 from componentClasses.currentTransformer import Current_Transformer as CT 
+from componentClasses.powerstation import BluettiAC180 as AC180
 
 # =========================================================================
 # Initialize Adafruit Power Sensors
@@ -25,17 +24,8 @@ ina260 = adafruit_ina260.INA260(i2c_bus = i2c,address = 0x44)
 
 timezone = timezone('US/Eastern')
 
-# frequency of logging in minutes
-updateRate = 1
-
-#async def getBluetti():
-
 #async def getINA219():
 myMac = 'DC:8A:6F:FD:79:66'
-
-
-GPIO.setmode(GPIO.BCM)
-gPin = 23
 
 async def INA(freq):
 	pv = {}
@@ -71,19 +61,20 @@ async def log(freq):
 async def main():
 	ct = CT()
 
-
-	#myData = Data()
+	psMac = 'DC:8A:6F:FD:79:66'
+    ps = AC180(psMac)
 
 	t1 = asyncio.create_task(INA(5))
 	t2 = asyncio.create_task(ct.run(10))
 	t3 = asyncio.create_task(log(60))
 	t4 = asyncio.create_task(actuate(10))
-	#loop.run_forever()
+	t5 = asyncio.create_task(ps.run(15))
 
 	await t1
 	await t2
 	await t3
 	await t4
+	await t5
 
 if __name__ == "__main__":
     asyncio.run(main())

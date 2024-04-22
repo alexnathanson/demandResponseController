@@ -20,11 +20,11 @@ class DigitalLogger():
 		GPIO.setup(self.pin, GPIO.OUT)
 
 	def setState(self,state):
-		if state == HIGH
+		if state:
 			GPIO.output(self.pin, GPIO.HIGH)
-		elif state == LOW
+		else:
 			GPIO.output(self.pin, GPIO.LOW)
-			GPIO.cleanup()
+		GPIO.cleanup()
 
 	# returns 1 if on and 0 if off
 	def getState(self):
@@ -32,6 +32,6 @@ class DigitalLogger():
 
 	def switchState(self):
 		if self.getState():
-		self.setState(LOW)
-	else:
-		self.setState(HIGH)
+			self.setState(False)
+		else:
+			self.setState(True)
