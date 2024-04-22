@@ -53,7 +53,7 @@ class Current_Transformer:
         I_RATIO = ICAL * (self.supplyV / self.resolution)
         Irms = I_RATIO * math.sqrt(sumI / self.adc_samples)
 
-        adjustedIrms = Irms - self.zOffset #zOffset should be integrated into the filtering line in the future, not tacked on at the end...
+        adjustedIrms = round(max(0,Irms - self.zOffset),3) #zOffset should be integrated into the filtering line in the future, not tacked on at the end...
         self.data['current A'] = adjustedIrms
         return adjustedIrms 
 

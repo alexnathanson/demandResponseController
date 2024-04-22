@@ -15,13 +15,13 @@ class INA():
 
 	def getData(self):
 		#timestamp = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
-		self.data['current mA'] = self.sensor.current
-		self.data['power W'] = self.sensor.power
+		self.data['current mA'] = round(self.sensor.current,3)
+		self.data['power W'] = round(self.sensor.power,3)
 
 		if self.name == "INA260":
-			self.data['voltage V'] = self.sensor.voltage
+			self.data['voltage V'] = round(self.sensor.voltage,3)
 		elif self.name == "INA219":
-			self.data['voltage V'] = self.sensor.bus_voltage
+			self.data['voltage V'] = round(self.sensor.bus_voltage, 3)
 
 	async def run(self, freq=10):
 		while True:
