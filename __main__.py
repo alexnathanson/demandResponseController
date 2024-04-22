@@ -40,7 +40,7 @@ async def actuate(freq):
 
 # this packages up all the data for MQTT publishing
 async def log(freq):
-	data = {
+	allData = {
 
 	}
 
@@ -48,18 +48,34 @@ async def log(freq):
 		print('*******************************************')
 		print('logging!')
 
-		data['CT'] = ct.data
-		data['Power Station'] = ps.data
-		data['RPi'] = ina219.data
-		data['PV'] = ina260.data
-		data['R1'] = dl.state
+		allData['CT'] = ct.data # current
+		allData['Power Station'] = ps.data #battery %, power, etc
+		allData['RPi'] = ina219.data # current, voltage, power
+		allData['PV'] = ina260.data # current, voltage, power
+		allData['R1'] = dl.state #
 
-		print(data)
+		print(allData)
 		print('*******************************************')
 
-		mqtt.publish()
+		mqtt.publish(packageData(allData))
 		await asyncio.sleep(freq)
 
+def packageData(data):
+
+	pData = {}
+
+	pData['battery'] = data['Power Station']['total_battery_percent']
+	pData['ac_out'] = data['Power Station']['ac_output_power']
+	pData['ac_in'] = data['Power Station']['ac_input_power']
+	pData['dc_out'] = data['Power Station']['dc_output_power']
+	pData['dc_in'] = data['Power Station']['dc_input_power']
+	pData['r1'] = data['R1']
+	pData['pv'] = data['PV']['power W']
+	pData['rpi']=data['RPi']['power W']
+	pData['load'] = data['CT'] * 120 #convert CT Irms to W
+
+	return pData
+	
 async def main():
 	mqtt.start()
 

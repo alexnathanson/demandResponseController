@@ -58,9 +58,14 @@ class EnergyController:
         self.client.connect(BROKER, port=8884, keepalive=60)
         self.client.loop_start()
     
-    def publish(self):
+    def publish(self, data):
         timestamp = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
-        self.client.publish("OpenDemandResponse/Participant/AlexN", payload="#".join(['dc_voltage', 'dc_current', timestamp]), qos=0, retain=False)
+
+        d = []
+        for k, v in data.items():
+            d.append(v)
+        d.append(timestamp)
+        self.client.publish("OpenDemandResponse/Participant/AlexN", payload="#".join(d), qos=0, retain=False)
     
     def stop_tracking(self):
         self.client.loop_stop()

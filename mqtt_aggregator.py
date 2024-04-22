@@ -43,8 +43,9 @@ class EnergyController:
         message = str(msg.payload.decode("utf-8"))
         if msg.topic == "OpenDemandResponse/Participant/AlexN":
             print('')
-            voltage, current, timestamp = message.split("#")
-            print("{}V {}A read at {}".format(voltage, current, timestamp))
+            battery, ac_out, ac_in, dc_out, dc_in, r1, pv, rpi, load, timestamp = message.split("#")
+            print("Data at {}".format(timestamp))
+            print("Battery: {}% \nload: {}\nAC Out: {}W, AC In: {}W, DC Out: {}W, DC In: {}W\nRelay State: {}\nPV: {}W\nRaspberry Pi: {}W".format(battery, load, ac_out, ac_in,dc_out, dc_in,r1,pv, rpi))
     
     # returns some key
     def auth(self):
