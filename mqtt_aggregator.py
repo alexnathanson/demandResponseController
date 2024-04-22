@@ -69,7 +69,7 @@ class EnergyController:
                 timestamp = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
                 self.client.publish("OpenDemandResponse/Event/BoroughHall", payload="#".join([event, event_type, str(start_time), timestamp]), qos=0, retain=False)
 
-            time.sleep(3)
+            time.sleep(30)
     
     def stop_tracking(self):
         self.client.loop_stop()

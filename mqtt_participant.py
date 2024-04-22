@@ -22,7 +22,8 @@ class EnergyController:
         #self.client.on_log = self.on_log
         self.client.on_publish = self.on_publish
         self.client.on_message = self.on_message
-        #self.client.tls_set(ca_certs="../keys/mosquitto.org.crt", certfile="../keys/client.crt",keyfile="../keys/client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
+        self.path = 'home/alex/demandResponseController/'
+        self.client.tls_set(ca_certs=self.path +"keys/mosquitto.org.crt", certfile=self.path +"keys/client.crt",keyfile=self.path +"keys/client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
         self.client.username_pw_set(None, password=None)
         self.data = {}
     

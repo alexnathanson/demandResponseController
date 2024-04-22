@@ -29,12 +29,13 @@ async def actuate(freq):
 	lastmsg = None
 
 	while True:
-		print('actuating!')
-		print(mqtt.data.msg_timestamp)
-		if mqtt.data.msg_timestamp != lastmsg:
-			lastmsg = mqtt.data.msg_timestamp
+		print('actuating!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+		if mqtt.data['msg_timestamp'] != lastmsg:
+			lastmsg = mqtt.data['msg_timestamp']
 			print('switching state!')
 			dl.switchState()
+		else:
+			print('not switching state')
 		await asyncio.sleep(freq)
 
 # this packages up all the data for MQTT publishing
