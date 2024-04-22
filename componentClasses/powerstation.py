@@ -19,7 +19,7 @@ from bluetti_mqtt.core import (
 class BluettiAC180():
     def __init__(self, mac):
         self.mac = mac
-        self.data = {}
+        self.data = {'total_battery_percent':0,'ac_output_power':0,'ac_input_power':0,'dc_output_power':0,'dc_input_power'}
 
     async def log_command(self, client: BluetoothClient, device: BluettiDevice, command: DeviceCommand):
         response_future = await client.perform(command)

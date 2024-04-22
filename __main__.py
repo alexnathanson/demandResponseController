@@ -72,10 +72,10 @@ def packageData(data):
 	pData['r1'] = data['R1']
 	pData['pv'] = data['PV']['power W']
 	pData['rpi']=data['RPi']['power W']
-	pData['load'] = data['CT'] * 120 #convert CT Irms to W
+	pData['load'] = data['CT']['current A'] * 120 #convert CT Irms to W
 
 	return pData
-	
+
 async def main():
 	mqtt.start()
 
