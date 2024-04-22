@@ -22,7 +22,7 @@ class EnergyController:
         #self.client.on_log = self.on_log
         self.client.on_publish = self.on_publish
         self.client.on_message = self.on_message
-        self.client.tls_set(ca_certs="../keys/mosquitto.org.crt", certfile="../keys/client.crt",keyfile="../keys/client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
+        #self.client.tls_set(ca_certs="../keys/mosquitto.org.crt", certfile="../keys/client.crt",keyfile="../keys/client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
         self.client.username_pw_set(None, password=None)
         self.data = {}
     
@@ -49,11 +49,13 @@ class EnergyController:
         if msg.topic == "OpenDemandResponse/Event/"+network:
             event, event_type, start_time,timestamp = message.split("#")
             if event_type == 'immediate':
-                self.data[event] = {'type':event_type,'start_time':start_time}
+                self.data[event] = {'type':event_type,'start_time':start_time,'msg_timestamp':timestamp}
+                print('******************************************************')
                 print("{} {} event, starting at {}".format(event, event_type, start_time))
-    
+                print('******************************************************')
+
     def start(self):
-        self.client.connect(BROKER, port=8884, keepalive=60)
+        self.client.connect(BROKER, port=1883, keepalive=60)
         self.client.loop_start()
     
     def publish(self):

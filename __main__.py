@@ -8,7 +8,7 @@ from componentClasses.component import INA
 from componentClasses.currentTransformer import Current_Transformer as CT 
 from componentClasses.powerstation import BluettiAC180 as AC180
 import atexit
-from componentClasses.mqtt_participant import EnergyController
+from mqtt_participant import EnergyController
 
 timezone = timezone('US/Eastern')
 
@@ -26,9 +26,12 @@ ina260 = INA('INA260')
 mqtt = EnergyController()
 
 async def actuate(freq):
-	
+	lastmsg = None
+
 	while True:
-		dl.switchState()
+		if mqtt.data.msg_timestamp != lastmsg:
+			lastmsg = mqtt.data.msg_timestamp
+			dl.switchState()
 		await asyncio.sleep(freq)
 
 # this packages up all the data for MQTT publishing
@@ -50,7 +53,7 @@ async def log(freq):
 		print(data)
 		print('*******************************************')
 
-		await mqtt.publish()
+		mqtt.publish()
 		await asyncio.sleep(freq)
 
 async def main():
