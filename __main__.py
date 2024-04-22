@@ -62,13 +62,13 @@ async def main():
 	ct = CT()
 
 	psMac = 'DC:8A:6F:FD:79:66'
-    ps = AC180(psMac)
+	ps = AC180(psMac)
 
 	t1 = asyncio.create_task(INA(5))
 	t2 = asyncio.create_task(ct.run(10))
 	t3 = asyncio.create_task(log(60))
 	t4 = asyncio.create_task(actuate(10))
-	t5 = asyncio.create_task(ps.run(15))
+	t5 = asyncio.create_task(ps.run(60))
 
 	await t1
 	await t2

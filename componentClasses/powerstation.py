@@ -19,6 +19,7 @@ from bluetti_mqtt.core import (
 class BluettiAC180():
     def __init__(self, mac):
         self.mac = mac
+        self.data = {}
 
     async def log_command(self, client: BluetoothClient, device: BluettiDevice, command: DeviceCommand):
         response_future = await client.perform(command)
@@ -33,9 +34,7 @@ class BluettiAC180():
             print(f'Got an error running command {command}: {err}')
             #log_invalid(log_file, err, command)
 
-    async def getData(self):
-        myData={
-        }
+    async def run(self, freq=60):
 
         devices = await check_addresses({self.mac})
         if len(devices) == 0:
@@ -53,25 +52,20 @@ class BluettiAC180():
             continue
 
         # Poll device
-        #while True:
-        for command in device.logging_commands:
-            commandResponse = await self.log_command(client, device, command)
-            for k,v in commandResponse.items():
-                print(k + ": " + str(v))
-                myData[k]=v
-    
-    async def run(self, freq=60):
-
         while True:
-            await self.getData()
+            for command in device.logging_commands:
+                commandResponse = await self.log_command(client, device, command)
+                for k,v in commandResponse.items():
+                    print(k + ": " + str(v))
+                    self.data[k]=v
             await asyncio.sleep(freq)
-
+    
 async def main():
     myDevice = 'DC:8A:6F:FD:79:66'
 
     device = BluettiAC180(myDevice)
 
-    myData = await device.getData()
+    myData = await device.run()
 
 if __name__ == "__main__":
     asyncio.run(main())
