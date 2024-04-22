@@ -50,21 +50,23 @@ async def log(freq):
 
 async def main():
 
+	try:
+		t1 = asyncio.create_task(ina219.run(5))
+		t2 = asyncio.create_task(ina260.run(5))
+		t3 = asyncio.create_task(ct.run(10))
+		t4 = asyncio.create_task(log(60))
+		t5 = asyncio.create_task(actuate(30))
+		t6 = asyncio.create_task(ps.run(60))
+
+		await t1
+		await t2
+		await t3
+		await t4
+		await t5
+		await t6
 	
-
-	t1a = asyncio.create_task(ina219.run(5))
-	t1b = asyncio.create_task(ina260.run(5))
-	t2 = asyncio.create_task(ct.run(10))
-	t3 = asyncio.create_task(log(60))
-	t4 = asyncio.create_task(actuate(10))
-	t5 = asyncio.create_task(ps.run(60))
-
-	await t1a
-	await t1b
-	await t2
-	await t3
-	await t4
-	await t5
+	finally:
+		dl.cleanup()
 
 if __name__ == "__main__":
     asyncio.run(main())
