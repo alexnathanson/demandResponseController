@@ -23,6 +23,7 @@ class Current_Transformer:
         self.ref_ical=15
         self.ref_vcal = 1
         self.zOffset = zOff #to determine zOffset, set to 0.0 and run program with no load. Change this to what the Irms reports when it should be 0A
+        self.data{'current A': 0}
 
     '''
     This Irms function comes from Open Energy Monitor user Bm2016 who based it on  EmonLib's calcIrms().
@@ -51,7 +52,10 @@ class Current_Transformer:
 
         I_RATIO = ICAL * (self.supplyV / self.resolution)
         Irms = I_RATIO * math.sqrt(sumI / self.adc_samples)
-        return Irms - self.zOffset #zOffset should be integrated into the filtering line in the future, not tacked on at the end...
+
+        adjustedIrms = Irms - self.zOffset #zOffset should be integrated into the filtering line in the future, not tacked on at the end...
+        self.data['current A'] = adjustedIrms
+        return adjustedIrms 
 
     async def run(self, freq=10):
         print('looping CT...')
