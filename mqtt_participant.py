@@ -63,7 +63,7 @@ class EnergyController:
 
         d = []
         for k, v in data.items():
-            d.append(v)
+            d.append(str(v))
         d.append(timestamp)
         self.client.publish("OpenDemandResponse/Participant/AlexN", payload="#".join(d), qos=0, retain=False)
     
