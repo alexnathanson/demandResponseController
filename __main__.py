@@ -7,6 +7,8 @@ from componentClasses.component import DigitalLogger as DL
 from componentClasses.component import INA
 from componentClasses.currentTransformer import Current_Transformer as CT 
 from componentClasses.powerstation import BluettiAC180 as AC180
+import atexit
+from componentClasses.mqtt_participant import EnergyController
 
 timezone = timezone('US/Eastern')
 
@@ -20,6 +22,8 @@ ps = AC180(psMac)
 
 ina219 = INA('INA219')
 ina260 = INA('INA260')
+
+mqtt = EnergyController()
 
 async def actuate(freq):
 	
@@ -46,28 +50,31 @@ async def log(freq):
 		print(data)
 		print('*******************************************')
 
+		await mqtt.publish()
 		await asyncio.sleep(freq)
 
 async def main():
 
-	try:
-		t1 = asyncio.create_task(ina219.run(5))
-		t2 = asyncio.create_task(ina260.run(5))
-		t3 = asyncio.create_task(ct.run(10))
-		t4 = asyncio.create_task(log(60))
-		t5 = asyncio.create_task(actuate(30))
-		t6 = asyncio.create_task(ps.run(60))
+	t1 = asyncio.create_task(ina219.run(5))
+	t2 = asyncio.create_task(ina260.run(5))
+	t3 = asyncio.create_task(ct.run(10))
+	t4 = asyncio.create_task(log(60))
+	t5 = asyncio.create_task(actuate(30))
+	t6 = asyncio.create_task(ps.run(60))
+	t7 = asyncio.create_task(mqtt.start())
 
-		await t1
-		await t2
-		await t3
-		await t4
-		await t5
-		await t6
-	except KeyboardInterrupt:
-		dl.cleanup()
-	finally:
-		dl.cleanup()
+	await t1
+	await t2
+	await t3
+	await t4
+	await t5
+	await t6
+	await t7
+
+@atexit.register
+def cleanup():
+	dl.cleanup()
+	print('Goodby')
 
 if __name__ == "__main__":
     asyncio.run(main())

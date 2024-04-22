@@ -52,18 +52,13 @@ class EnergyController:
                 #self.records[name] = uid
                 print("{} {} event, starting at {}".format(event, event_type, start_time))
     
-    def run(self):
+    def start(self):
         self.client.connect(BROKER, port=8884, keepalive=60)
         self.client.loop_start()
-        while True:
-            dc_voltage = str(4.99)
-            dc_current = str(.51)
-            update = True
-            if update:
-                #name = name.strip()
-                timestamp = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
-                self.client.publish("OpenDemandResponse/Participant/AlexN", payload="#".join([dc_voltage, dc_current, timestamp]), qos=0, retain=False)
-            time.sleep(3)
+    
+    def publish(self):
+        timestamp = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
+        self.client.publish("OpenDemandResponse/Participant/AlexN", payload="#".join(['dc_voltage', 'dc_current', 'timestamp']), qos=0, retain=False)
     
     def stop_tracking(self):
         self.client.loop_stop()
