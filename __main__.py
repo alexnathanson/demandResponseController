@@ -54,6 +54,7 @@ async def log(freq):
 		await asyncio.sleep(freq)
 
 async def main():
+	mqtt.start()
 
 	t1 = asyncio.create_task(ina219.run(5))
 	t2 = asyncio.create_task(ina260.run(5))
@@ -61,7 +62,8 @@ async def main():
 	t4 = asyncio.create_task(log(60))
 	t5 = asyncio.create_task(actuate(30))
 	t6 = asyncio.create_task(ps.run(60))
-	t7 = asyncio.create_task(mqtt.start())
+	#t7 = asyncio.create_task(mqtt.start())
+	
 
 	await t1
 	await t2
@@ -69,7 +71,7 @@ async def main():
 	await t4
 	await t5
 	await t6
-	await t7
+	#await t7
 
 @atexit.register
 def cleanup():

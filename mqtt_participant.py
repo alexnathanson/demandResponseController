@@ -22,9 +22,9 @@ class EnergyController:
         #self.client.on_log = self.on_log
         self.client.on_publish = self.on_publish
         self.client.on_message = self.on_message
-        self.client.tls_set(ca_certs="keys/mosquitto.org.crt", certfile="keys/client.crt",keyfile="keys/client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
+        self.client.tls_set(ca_certs="../keys/mosquitto.org.crt", certfile="../keys/client.crt",keyfile="../keys/client.key", tls_version=ssl.PROTOCOL_TLSv1_2)
         self.client.username_pw_set(None, password=None)
-        self.records = {}
+        self.data = {}
     
     # The callback for when the client receives a CONNACK response from the server.
     def on_connect(self, client, userdata, flags, rc):
@@ -49,7 +49,7 @@ class EnergyController:
         if msg.topic == "OpenDemandResponse/Event/"+network:
             event, event_type, start_time,timestamp = message.split("#")
             if event_type == 'immediate':
-                #self.records[name] = uid
+                self.data[event] = {'type':event_type,'start_time':start_time}
                 print("{} {} event, starting at {}".format(event, event_type, start_time))
     
     def start(self):
