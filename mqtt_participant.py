@@ -49,7 +49,7 @@ class EnergyController:
         if msg.topic == "OpenDemandResponse/Event/"+network:
             event, event_type, start_time,timestamp = message.split("#")
             if event_type == 'immediate':
-                self.data[event] = {'type':event_type,'start_time':start_time,'msg_timestamp':timestamp}
+                self.data = {'event':event,'type':event_type,'start_time':start_time,'msg_timestamp':timestamp}
                 print('******************************************************')
                 print("{} {} event, starting at {}".format(event, event_type, start_time))
                 print('******************************************************')
@@ -60,7 +60,7 @@ class EnergyController:
     
     def publish(self):
         timestamp = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
-        self.client.publish("OpenDemandResponse/Participant/AlexN", payload="#".join(['dc_voltage', 'dc_current', 'timestamp']), qos=0, retain=False)
+        self.client.publish("OpenDemandResponse/Participant/AlexN", payload="#".join(['dc_voltage', 'dc_current', timestamp]), qos=0, retain=False)
     
     def stop_tracking(self):
         self.client.loop_stop()
