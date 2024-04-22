@@ -26,11 +26,11 @@ ina260 = INA('INA260')
 mqtt = EnergyController()
 
 async def actuate(freq):
-	lastmsg = None
+	lastmsg = 0
 
 	while True:
 		print('actuating!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-		if mqtt.data['msg_timestamp'] != lastmsg:
+		if 'msg_timestamp' in mqtt.data.keys() and mqtt.data['msg_timestamp'] != lastmsg:
 			lastmsg = mqtt.data['msg_timestamp']
 			print('switching state!')
 			dl.switchState()
