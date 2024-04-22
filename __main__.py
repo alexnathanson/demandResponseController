@@ -3,8 +3,8 @@ import time
 from pytz import timezone
 from datetime import datetime
 import math
-from componentClasses.component import DigitalLogger as DL
-from componentClasses.component import INA
+from componentClasses.components import DigitalLogger as DL
+from componentClasses.components import INA
 from componentClasses.currentTransformer import Current_Transformer as CT 
 from componentClasses.powerstation import BluettiAC180 as AC180
 import atexit
@@ -29,8 +29,11 @@ async def actuate(freq):
 	lastmsg = None
 
 	while True:
+		print('actuating!')
+		print(mqtt.data.msg_timestamp)
 		if mqtt.data.msg_timestamp != lastmsg:
 			lastmsg = mqtt.data.msg_timestamp
+			print('switching state!')
 			dl.switchState()
 		await asyncio.sleep(freq)
 

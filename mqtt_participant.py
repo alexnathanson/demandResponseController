@@ -48,11 +48,10 @@ class EnergyController:
         message = str(msg.payload.decode("utf-8"))
         if msg.topic == "OpenDemandResponse/Event/"+network:
             event, event_type, start_time,timestamp = message.split("#")
-            if event_type == 'immediate':
-                self.data = {'event':event,'type':event_type,'start_time':start_time,'msg_timestamp':timestamp}
-                print('******************************************************')
-                print("{} {} event, starting at {}".format(event, event_type, start_time))
-                print('******************************************************')
+            self.data = {'event':event,'type':event_type,'start_time':start_time,'msg_timestamp':timestamp}
+            print('******************************************************')
+            print("{} {} event, starting at {}".format(event, event_type, start_time))
+            print('******************************************************')
 
     def start(self):
         self.client.connect(BROKER, port=1883, keepalive=60)
