@@ -4,7 +4,7 @@
 
 # 	def data(self):
 # 		pass
-
+import asyncio
 
 import board
 import busio
@@ -26,17 +26,17 @@ class INA():
 		if self.name == "INA260":
 			self.data['current mA'] = self.sensor.current
 			self.data['voltage V'] = self.sensor.voltage
-			self.['power W'] = self.sensor.power
+			self.data['power W'] = self.sensor.power
 		elif self.name == "INA219":
 			self.data['current mA'] = self.sensor.current
 			self.data['voltage V'] = self.sensor.bus_voltage
 			self.data['power W'] = self.sensor.power
 
 	async def run(self, freq=10):
-        while True:
-        	self.getData()
-        	print(self.data)
-            await asyncio.sleep(freq)
+		while True:
+			self.getData()
+			print(self.data)
+			await asyncio.sleep(freq)
 
 
 import RPi.GPIO as GPIO

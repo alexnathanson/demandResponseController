@@ -39,8 +39,8 @@ async def log(freq):
 
 		data['CT'] = ct.data
 		data['Power Station'] = ps.data
-		data['RPi'] = ina219.getData
-		data['PV'] = ina260.getData
+		data['RPi'] = ina219.data
+		data['PV'] = ina260.data
 		data['R1'] = dl.state
 
 		print(data)

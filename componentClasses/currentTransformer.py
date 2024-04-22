@@ -23,7 +23,7 @@ class Current_Transformer:
         self.ref_ical=15
         self.ref_vcal = 1
         self.zOffset = zOff #to determine zOffset, set to 0.0 and run program with no load. Change this to what the Irms reports when it should be 0A
-        self.data{'current A': 0}
+        self.data={'current A': 0}
 
     '''
     This Irms function comes from Open Energy Monitor user Bm2016 who based it on  EmonLib's calcIrms().
