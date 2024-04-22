@@ -56,6 +56,7 @@ class DigitalLogger():
 			GPIO.output(self.pin, GPIO.LOW)
 	
 	def cleanup():
+		GPIO.output(self.pin, GPIO.LOW)
 		GPIO.cleanup()
 
 	# returns 1 if on and 0 if off

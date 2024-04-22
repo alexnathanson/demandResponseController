@@ -64,7 +64,8 @@ async def main():
 		await t4
 		await t5
 		await t6
-	
+	except KeyboardInterrupt:
+		dl.cleanup()
 	finally:
 		dl.cleanup()
 
