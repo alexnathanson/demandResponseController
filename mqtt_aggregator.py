@@ -67,15 +67,16 @@ class EnergyController:
         self.client.loop_start()
         authUpdate = False
         while True:
+            print('awake!')
             event = eventNames[random.randint(0,len(eventNames)-1)]
             event_type = eventTypes[random.randint(0,len(eventTypes)-1)]
             start_time = eventTimes[random.randint(0,len(eventTimes)-1)]
 
             # update key when first connected
-            # if authUpdate:
-            #     a = self.auth()
-            #     self.client.publish("OpenDemandResponse/Auth", payload=a, qos=0, retain=False)
-            #     authUpdate = False
+            if authUpdate:
+                a = self.auth()
+                self.client.publish("OpenDemandResponse/Auth", payload=a, qos=0, retain=False)
+                authUpdate = False
             update = True
             if update:
                 timestamp = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
@@ -89,4 +90,4 @@ class EnergyController:
 
 if __name__ == '__main__':
     controller = EnergyController()
-    controller.run(90)
+    controller.run(30) #was 90 second intervals
