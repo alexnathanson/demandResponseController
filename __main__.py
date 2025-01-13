@@ -60,9 +60,9 @@ async def log(freq):
 		allData['CT'] = ct.data # current
 		allData['Power Station'] = ps.data #battery %, power, etc
 
-		if ina219 not False:
+		if ina219 != False:
 			allData['RPi'] = ina219.data # current, voltage, power
-		if ina260 not False:
+		if ina260 != False:
 			allData['PV'] = ina260.data # current, voltage, power
 		allData['R1'] = dl.state #
 
@@ -91,20 +91,21 @@ def packageData(data):
 async def main():
 	mqtt.start()
 
-	if ina219 not False:
+	if ina219 != False:
 		t1 = asyncio.create_task(ina219.run(5))
 
-	if ina260 not False:
+	if ina260 != False:
 		t2 = asyncio.create_task(ina260.run(5))
+
 	t3 = asyncio.create_task(ct.run(10))
 	t4 = asyncio.create_task(log(60))
 	t5 = asyncio.create_task(actuate(30))
 	t6 = asyncio.create_task(ps.run(60))
 	#t7 = asyncio.create_task(mqtt.start())
 	
-	if ina219 not False:
+	if ina219 != False:
 		await t1
-	if ina260 not False:
+	if ina260 != False:
 		await t2
 	await t3
 	await t4
