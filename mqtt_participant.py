@@ -27,7 +27,7 @@ network = "BoroughHall"
 
 class EnergyController:
     def __init__(self):
-        self.client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION1,client_id=CLIENT_ID, clean_session=True, userdata=None, protocol=mqtt.MQTTv311, transport="tcp")
+        self.client = mqtt.Client(callback_api_version=mqtt.CallbackAPIVersion.VERSION2,client_id=CLIENT_ID, clean_session=True, userdata=None, protocol=mqtt.MQTTv311, transport="tcp")
         self.client.on_connect = self.on_connect
         self.client.on_connect_fail = self.on_connect_fail
         #self.client.on_log = self.on_log
@@ -84,4 +84,4 @@ class EnergyController:
 
 if __name__ == '__main__':
     controller = EnergyController()
-    controller.run()
+    controller.start()
