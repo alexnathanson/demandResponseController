@@ -1,6 +1,8 @@
 *.sublime-project
 *.sublime-workspace
 
+__pycache__/*
+
 venv/*
 
 local.txt
