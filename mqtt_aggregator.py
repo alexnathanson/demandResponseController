@@ -35,7 +35,8 @@ class EnergyController:
         self.client.on_publish = self.on_publish
         self.client.on_message = self.on_message
         self.client.username_pw_set(None, password=None)
-        self.client.tls_set(ca_certs="keys/mosquitto.org.crt", certfile="keys/client.crt",keyfile="keys/client.key", tls_version=ssl.PROTOCOL_TLSv1_2) #needed for ports 8883 and 8884
+        if encrypt:
+            self.client.tls_set(ca_certs="keys/mosquitto.org.crt", certfile="keys/client.crt",keyfile="keys/client.key", tls_version=ssl.PROTOCOL_TLSv1_2) #needed for ports 8883 and 8884
         self.records = {}
     
     # The callback for when the client receives a CONNACK response from the server.
