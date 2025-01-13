@@ -10,6 +10,17 @@ import ssl
 BROKER = "test.mosquitto.org"
 CLIENT_ID = ""
 
+'''
+if true, port 8884 is used (encrypted, client certificate required)
+else, port 1883 is used (unencrypted, unauthenticated)
+'''
+encrypt = False
+
+if encrypt:
+    myPort = 8884
+else:
+    myPort = 1883
+
 timezone = timezone('US/Eastern')
 
 network = "BoroughHall"
@@ -55,7 +66,7 @@ class EnergyController:
             print('******************************************************')
 
     def start(self):
-        self.client.connect(BROKER, port=8884, keepalive=60)
+        self.client.connect(BROKER, port=myPort, keepalive=60)
         self.client.loop_start()
     
     def publish(self, data):
