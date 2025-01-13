@@ -3,6 +3,8 @@
 
 venv/*
 
+local.txt
+
 client.crt
 client.key
 client.csr

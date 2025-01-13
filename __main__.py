@@ -20,8 +20,17 @@ ct = CT()
 psMac = 'DC:8A:6F:FD:79:66'
 ps = AC180(psMac)
 
-ina219 = INA('INA219')
-ina260 = INA('INA260')
+try:
+	ina219 = INA('INA219')
+except:
+	print('INA219 device not found')
+	ina219 = False
+
+try:
+	ina260 = INA('INA260')
+except:
+	print('INA260 device not found')
+	ina260 = False
 
 mqtt = EnergyController()
 
@@ -50,8 +59,11 @@ async def log(freq):
 
 		allData['CT'] = ct.data # current
 		allData['Power Station'] = ps.data #battery %, power, etc
-		allData['RPi'] = ina219.data # current, voltage, power
-		allData['PV'] = ina260.data # current, voltage, power
+
+		if ina219 not False:
+			allData['RPi'] = ina219.data # current, voltage, power
+		if ina260 not False:
+			allData['PV'] = ina260.data # current, voltage, power
 		allData['R1'] = dl.state #
 
 		print(allData)
@@ -79,17 +91,21 @@ def packageData(data):
 async def main():
 	mqtt.start()
 
-	t1 = asyncio.create_task(ina219.run(5))
-	t2 = asyncio.create_task(ina260.run(5))
+	if ina219 not False:
+		t1 = asyncio.create_task(ina219.run(5))
+
+	if ina260 not False:
+		t2 = asyncio.create_task(ina260.run(5))
 	t3 = asyncio.create_task(ct.run(10))
 	t4 = asyncio.create_task(log(60))
 	t5 = asyncio.create_task(actuate(30))
 	t6 = asyncio.create_task(ps.run(60))
 	#t7 = asyncio.create_task(mqtt.start())
 	
-
-	await t1
-	await t2
+	if ina219 not False:
+		await t1
+	if ina260 not False:
+		await t2
 	await t3
 	await t4
 	await t5

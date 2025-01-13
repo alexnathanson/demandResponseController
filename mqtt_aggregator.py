@@ -13,6 +13,16 @@ CLIENT_ID = ""
 
 timezone = timezone('US/Eastern')
 
+'''
+if true, port 8884 is used (encrypted, client certificate required)
+else, port 1883 is used (unencrypted, unauthenticated)
+'''
+encrypt = False
+
+if encrypt:
+    myPort = 8884
+else:
+    myPort = 1883
 
 eventNames = ['DLRP','CSRP']
 eventTypes = ['contingency','immediate']
@@ -52,7 +62,7 @@ class EnergyController:
         return gfdgsdfhsdfsjdf
 
     def run(self, freq):
-        self.client.connect(BROKER, port=8884, keepalive=60)
+        self.client.connect(BROKER, port=myPort, keepalive=60)
         self.client.loop_start()
         authUpdate = False
         while True:
@@ -61,10 +71,10 @@ class EnergyController:
             start_time = eventTimes[random.randint(0,len(eventTimes)-1)]
 
             # update key when first connected
-            if authUpdate:
-                a = self.auth()
-                self.client.publish("OpenDemandResponse/Auth", payload=a, qos=0, retain=False)
-                authUpdate = False
+            # if authUpdate:
+            #     a = self.auth()
+            #     self.client.publish("OpenDemandResponse/Auth", payload=a, qos=0, retain=False)
+            #     authUpdate = False
             update = True
             if update:
                 timestamp = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
