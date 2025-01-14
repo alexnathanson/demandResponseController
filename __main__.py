@@ -82,8 +82,12 @@ def packageData(data):
 	pData['r1'] = data['R1']
 	if ina260 != False:
 		pData['pv'] = data['PV']['power W']
+	else:
+		pData['pv'] = False
 	if ina219 != False:
 		pData['rpi']=data['RPi']['power W']
+	else:
+		pData['rpi']= False
 	pData['load'] = data['CT']['current A'] * 120 #convert CT Irms to W
 	print('packaged data')
 	return pData

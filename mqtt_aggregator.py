@@ -55,10 +55,13 @@ class EnergyController:
         #print(message)
         if msg.topic == "OpenDemandResponse/Participant/AlexN":
             print('')
-            battery, ac_out, ac_in, dc_out, dc_in, r1, pv, rpi, load, timestamp = message.split("#")
-            print("Data at {}".format(timestamp))
-            print("Battery: {}% \nload: {}\nAC Out: {}W, AC In: {}W, DC Out: {}W, DC In: {}W\nRelay State: {}\nPV: {}W\nRaspberry Pi: {}W".format(battery, load, ac_out, ac_in,dc_out, dc_in,r1,pv, rpi))
-
+            try:
+                battery, ac_out, ac_in, dc_out, dc_in, r1, pv, rpi, load, timestamp = message.split("#")
+                print("Data at {}".format(timestamp))
+                print("Battery: {}% \nload: {}\nAC Out: {}W, AC In: {}W, DC Out: {}W, DC In: {}W\nRelay State: {}\nPV: {}W\nRaspberry Pi: {}W".format(battery, load, ac_out, ac_in,dc_out, dc_in,r1,pv, rpi))
+            except:
+                print('data mismatch, dumping message')
+                print(message)
     # returns some key
     def auth(self):
         return gfdgsdfhsdfsjdf
