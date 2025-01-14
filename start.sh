@@ -14,5 +14,5 @@ source /home/alex/demandResponseController/.venv/bin/activate
 
 echo "Starting Demand Response Controller"
 
-echo view error logs at demandResponseController/runner.log
+echo "view error logs at demandResponseController/runner.log"
 python /home/alex/demandResponseController > /home/alex/demandResponseController/runner.log 2>&1 &
