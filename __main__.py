@@ -53,6 +53,8 @@ async def log(freq):
 
 	}
 
+	print('log function!')
+	
 	while True:
 		print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
 		print('logging!')
