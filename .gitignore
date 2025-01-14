@@ -3,7 +3,7 @@
 
 __pycache__/*
 
-libraries/*
+web/libraries/*
 
 venv/*
 

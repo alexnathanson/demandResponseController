@@ -1,0 +1,1 @@
+download the Paho JS client: https://projects.eclipse.org/projects/iot.paho/downloads
