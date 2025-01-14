@@ -26,7 +26,7 @@ else:
 
 eventNames = ['DLRP','CSRP']
 eventTypes = ['contingency','immediate']
-eventTimes = [11,14, 16, 17, 19]
+eventTimes = [25,14, 16, 17, 19]
 
 class EnergyController:
     def __init__(self):
@@ -52,12 +52,13 @@ class EnergyController:
     # The callback for when a message is received.
     def on_message(self, client, userdata, msg):
         message = str(msg.payload.decode("utf-8"))
+        print(message)
         if msg.topic == "OpenDemandResponse/Participant/AlexN":
             print('')
             battery, ac_out, ac_in, dc_out, dc_in, r1, pv, rpi, load, timestamp = message.split("#")
             print("Data at {}".format(timestamp))
             print("Battery: {}% \nload: {}\nAC Out: {}W, AC In: {}W, DC Out: {}W, DC In: {}W\nRelay State: {}\nPV: {}W\nRaspberry Pi: {}W".format(battery, load, ac_out, ac_in,dc_out, dc_in,r1,pv, rpi))
-    
+
     # returns some key
     def auth(self):
         return gfdgsdfhsdfsjdf

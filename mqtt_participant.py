@@ -77,6 +77,9 @@ class EnergyController:
         for k, v in data.items():
             d.append(str(v))
         d.append(timestamp)
+        print('%%%%%% PUBLISHING %%%%%%')
+        print(d)
+        print('%%%%%%%%%%%%%%%%%%%')
         self.client.publish("OpenDemandResponse/Participant/AlexN", payload="#".join(d), qos=0, retain=False)
     
     def stop_tracking(self):
