@@ -8,11 +8,14 @@ Circuit
 R = 1.2K Ohms
 T = 2N2222, BC546B, or similar
 
-L___    ____G
-    \_/*
-     |
-     R
-     |
+V+___L+
+
+L-___    ____G
+     \_/*
+      |
+      R
+      |
+    GPIO 23 (pin 16)
 '''
 
 import RPi.GPIO as GPIO

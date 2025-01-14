@@ -54,7 +54,7 @@ async def log(freq):
 	}
 
 	while True:
-		print('*******************************************')
+		print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
 		print('logging!')
 
 		allData['CT'] = ct.data # current
@@ -67,7 +67,7 @@ async def log(freq):
 		allData['R1'] = dl.state #
 
 		print(allData)
-		print('*******************************************')
+		print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
 
 		mqtt.publish(packageData(allData))
 		await asyncio.sleep(freq)

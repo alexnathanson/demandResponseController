@@ -52,7 +52,7 @@ class EnergyController:
     # The callback for when a message is received.
     def on_message(self, client, userdata, msg):
         message = str(msg.payload.decode("utf-8"))
-        print(message)
+        #print(message)
         if msg.topic == "OpenDemandResponse/Participant/AlexN":
             print('')
             battery, ac_out, ac_in, dc_out, dc_in, r1, pv, rpi, load, timestamp = message.split("#")
