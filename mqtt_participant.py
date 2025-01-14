@@ -81,6 +81,8 @@ class EnergyController:
         print(d)
         print('%%%%%%%%%%%%%%%%%%%')
         self.client.publish("OpenDemandResponse/Participant/AlexN", payload="#".join(d), qos=0, retain=False)
+        self.client.publish("OpenDemandResponse/participants", payload="AlexN", qos=0, retain=False)
+
     
     def stop_tracking(self):
         self.client.loop_stop()
