@@ -38,7 +38,7 @@ async def actuate(freq):
 	lastmsg = 0
 
 	while True:
-		print('actuating!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+		#print('actuating!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 		if 'msg_timestamp' in mqtt.data.keys() and mqtt.data['msg_timestamp'] != lastmsg:
 			lastmsg = mqtt.data['msg_timestamp']
 			print('switching state!')
@@ -80,10 +80,12 @@ def packageData(data):
 	pData['dc_out'] = data['Power Station']['dc_output_power']
 	pData['dc_in'] = data['Power Station']['dc_input_power']
 	pData['r1'] = data['R1']
-	pData['pv'] = data['PV']['power W']
-	pData['rpi']=data['RPi']['power W']
+	if ina260 != False:
+		pData['pv'] = data['PV']['power W']
+	if ina219 != False:
+		pData['rpi']=data['RPi']['power W']
 	pData['load'] = data['CT']['current A'] * 120 #convert CT Irms to W
-	print(pData)
+	print('packaged data')
 	return pData
 
 async def main():
