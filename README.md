@@ -12,12 +12,21 @@ Install this version of bluetti_mqtt (should be done in venv): https://www.githu
 
 ## Running
 
-### Participant
+### Participant on Linux
 
+#### Automating at startup
+
+Open rc.local `sudo nano /etc/rc.local`
+    * add this line above "exit 0" sudo -H -u pi /bin/bash /home/USER_NAME/demandResponseController/start.sh > /home/USER_NAME/demandResponseController/start.log 2>&1 &
+
+Can be good to restart daily, sometimes. Open the root crontab with `sudo crontab -e`
+    * add this line to the bottom to restart the server at midnight `@midnight sudo reboot`
+
+#### Running Manually
 `source venv\bin\activate`
 from outside the demandResponseController directory: `python demandResponseController`
 
-### Aggregator
+### Aggregator on Windows
 
 `venv\Scripts\activate`
 `python mqtt_aggregator`

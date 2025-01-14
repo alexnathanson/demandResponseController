@@ -54,7 +54,6 @@ async def log(freq):
 	}
 
 	while True:
-		print('--------- logging! -----------')
 
 		allData['CT'] = ct.data # current
 		allData['Power Station'] = ps.data #battery %, power, etc
@@ -89,7 +88,6 @@ def packageData(data):
 	else:
 		pData['rpi']= False
 	pData['load'] = data['CT']['current A'] * 120 #convert CT Irms to W
-	print('packaged data')
 	return pData
 
 async def main():

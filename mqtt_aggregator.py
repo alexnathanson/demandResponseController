@@ -71,7 +71,6 @@ class EnergyController:
         self.client.loop_start()
         authUpdate = False
         while True:
-            print('awake!')
             event = eventNames[random.randint(0,len(eventNames)-1)]
             event_type = eventTypes[random.randint(0,len(eventTypes)-1)]
             start_time = eventTimes[random.randint(0,len(eventTimes)-1)]

@@ -62,9 +62,9 @@ class EnergyController:
         if msg.topic == "OpenDemandResponse/Event/"+network:
             event, event_type, start_time,timestamp = message.split("#")
             self.data = {'event':event,'type':event_type,'start_time':start_time,'msg_timestamp':timestamp}
-            print('******************************************************')
+            print('********* RECIEVING *******************')
             print("{} {} event, starting at {}".format(event, event_type, start_time))
-            print('******************************************************')
+            print('***************************************')
 
     def start(self):
         self.client.connect(BROKER, port=myPort, keepalive=60)
