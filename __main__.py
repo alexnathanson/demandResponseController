@@ -53,11 +53,8 @@ async def log(freq):
 
 	}
 
-	print('log function!')
-	
 	while True:
-		print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-		print('logging!')
+		print('--------- logging! -----------')
 
 		allData['CT'] = ct.data # current
 		allData['Power Station'] = ps.data #battery %, power, etc
@@ -68,8 +65,7 @@ async def log(freq):
 			allData['PV'] = ina260.data # current, voltage, power
 		allData['R1'] = dl.state #
 
-		print(allData)
-		print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+		#print(allData)
 
 		mqtt.publish(packageData(allData))
 		await asyncio.sleep(freq)
@@ -87,7 +83,7 @@ def packageData(data):
 	pData['pv'] = data['PV']['power W']
 	pData['rpi']=data['RPi']['power W']
 	pData['load'] = data['CT']['current A'] * 120 #convert CT Irms to W
-
+	print(pData)
 	return pData
 
 async def main():
