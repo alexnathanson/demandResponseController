@@ -4,7 +4,7 @@ from pytz import timezone
 from datetime import datetime
 import math
 import sys
-sys.path.append('../demandResponseController')
+sys.path.append('..')
 from demandResponseController.componentClasses.components import DigitalLogger as DL
 from demandResponseController.componentClasses.components import INA
 from demandResponseController.componentClasses.currentTransformer import Current_Transformer as CT 
@@ -35,8 +35,6 @@ try:
 except:
 	print('INA260 device not found')
 	ina260 = False
-
-#mqtt = EnergyController()
 
 async def actuate(state):
 
