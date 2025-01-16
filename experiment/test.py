@@ -1,13 +1,18 @@
 #test
 import csv
+from datetime import datetime, date
+import time
+import pandas as pd
 
 print("writing data")
-fileName = 'demandResponseController/experiments/outputs/exp1_'+str(datetime.date.today())+'.csv'
+fileName = 'experiment/outputs/exp1_'+str(date.today())+'.csv'
 print(fileName)
 
 newDf = {}
-newDf['battery'] = 420
-newDf['ac_out'] = 69
+newDf['battery'] = [420]
+newDf['ac_out'] = [69]
+
+newDf = pd.DataFrame.from_dict(newDf)
 
 try:
     with open(fileName) as csvfile:
@@ -17,4 +22,4 @@ try:
         df.to_csv(fileName, sep=',',index=False)
 except Exception as e:
     print(e)
-    newDF.to_csv(fileName, sep=',',index=False)
+    newDf.to_csv(fileName, sep=',',index=False)

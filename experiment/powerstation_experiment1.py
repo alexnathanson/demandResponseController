@@ -1,7 +1,7 @@
 import asyncio
 import time
 from pytz import timezone
-from datetime import datetime
+from datetime import datetime, date
 import math
 import sys
 sys.path.append('..')
@@ -13,6 +13,7 @@ import atexit
 # from mqtt_participant import EnergyController
 import csv
 import os
+import pandas as pd
 
 timezone = timezone('US/Eastern')
 
@@ -95,7 +96,7 @@ async def main():
 
 	t3 = asyncio.create_task(ct.run(10))
 	t4 = asyncio.create_task(log(60)) #writes or sends data
-	t5 = asyncio.create_task(actuate(30))
+	t5 = asyncio.create_task(actuate(False))
 	t6 = asyncio.create_task(ps.run(60))
 	#t7 = asyncio.create_task(mqtt.start())
 	
@@ -112,8 +113,8 @@ async def main():
 def writeData(newDf):
     # create a new file daily to save data
     # or append if the file already exists
-    print("writing data")
-    fileName = 'demandResponseController/experiments/outputs/exp1_'+str(datetime.date.today())+'.csv'
+    print("writing data at " + str(date.now.strftime("%d-%m-%Y_%H-%M-%S")))
+    fileName = 'experiment/outputs/exp1_'+str(date.now.strftime("%d-%m-%Y_%H-%M-%S"))+'.csv'
 
     try:
         with open(fileName) as csvfile:
@@ -123,7 +124,7 @@ def writeData(newDf):
             df.to_csv(fileName, sep=',',index=False)
     except Exception as e:
         print(e)
-        newDF.to_csv(fileName, sep=',',index=False)
+        newDf.to_csv(fileName, sep=',',index=False)
 
 @atexit.register
 def cleanup():
