@@ -3,15 +3,16 @@ import time
 from pytz import timezone
 from datetime import datetime
 import math
-from componentClasses.components import DigitalLogger as DL
-from componentClasses.components import INA
-from componentClasses.currentTransformer import Current_Transformer as CT 
-from componentClasses.powerstation import BluettiAC180 as AC180
+import sys
+sys.path.append('../demandResponseController')
+from demandResponseController.componentClasses.components import DigitalLogger as DL
+from demandResponseController.componentClasses.components import INA
+from demandResponseController.componentClasses.currentTransformer import Current_Transformer as CT 
+from demandResponseController.componentClasses.powerstation import BluettiAC180 as AC180
 import atexit
 # from mqtt_participant import EnergyController
 import csv
 import os
-import sys
 
 timezone = timezone('US/Eastern')
 
