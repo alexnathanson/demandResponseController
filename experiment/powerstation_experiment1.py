@@ -41,10 +41,18 @@ except:
 	print('INA260 device not found')
 	ina260 = False
 
-async def actuate(state):
+async def actuate(freq):
+	state
+	#check battery %
+	if ps.data == 100:
+		state = False
+	else:
+		state = True
 
 	print('setting state to ' + state)
 	dl.setState(state)
+	
+	await asyncio.sleep(freq)
 
 # this packages up all the data
 # freq determines how often data should be logged
@@ -109,7 +117,7 @@ async def main():
 
 	t3 = asyncio.create_task(ct.run(10))
 	t4 = asyncio.create_task(log(60)) #writes or sends data
-	t5 = asyncio.create_task(actuate(False))
+	t5 = asyncio.create_task(actuate(60))
 	t6 = asyncio.create_task(ps.run(60))
 	#t7 = asyncio.create_task(mqtt.start())
 	
