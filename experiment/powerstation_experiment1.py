@@ -112,7 +112,8 @@ async def main():
 def writeData(newDf):
     # create a new file daily to save data
     # or append if the file already exists
-    fileName = 'outputs/exp1_'+str(datetime.date.today())+'.csv'
+    print("writing data")
+    fileName = 'demandResponseController/experiments/outputs/exp1_'+str(datetime.date.today())+'.csv'
 
     try:
         with open(fileName) as csvfile:
