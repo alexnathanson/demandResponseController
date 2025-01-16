@@ -19,6 +19,7 @@ timezone = timezone('US/Eastern')
 
 #start time for experiment is also the name of the file
 expStart = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+print('Starting experiment at ' + expStart)
 
 myMac = 'DC:8A:6F:FD:79:66'
 
@@ -69,7 +70,8 @@ async def log(freq):
 		await asyncio.sleep(freq)
 
 def packageData(data):
-
+	print("packaging data...")
+	
 	pData = {}
 
 	pData['battery'] = data['Power Station']['total_battery_percent']
