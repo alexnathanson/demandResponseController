@@ -23,15 +23,3 @@ try:
 except Exception as e:
     print(e)
     newDf.to_csv(fileName, sep=',',index=False)
-
-def actuate(freq):
-    state
-    #check battery %
-    if ps.data == 100:
-        state = False
-    else:
-        state = True
-
-    print('setting state to ' + state)
-    dl.setState(state)
-    

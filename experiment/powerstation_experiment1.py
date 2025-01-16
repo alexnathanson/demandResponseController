@@ -42,16 +42,15 @@ except:
 	ina260 = False
 
 async def actuate(freq):
-	state
 	#check battery %
 	if ps.data == 100:
-		state = False
+		state = 0
 	else:
-		state = True
+		state = 1
 
-	print('setting state to ' + state)
+	print('setting state to ' + str(state))
 	dl.setState(state)
-	
+
 	await asyncio.sleep(freq)
 
 # this packages up all the data
