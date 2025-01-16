@@ -21,6 +21,9 @@ timezone = timezone('US/Eastern')
 expStart = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
 print('Starting experiment at ' + expStart)
 
+run = 1 # experiment run count
+firstRun = True
+
 myMac = 'DC:8A:6F:FD:79:66'
 
 dl = DL()
@@ -44,13 +47,20 @@ except:
 async def actuate(freq):
 	#check battery %
 	try:
+		state = -1
 		if ps.data == 100: #turn off charging from grid power
 			state = 0
+			if firstRun == False:
+				run = run + 1 #starts at 100%, goes to 20%
+				if run >= 4:
+					exit(1) #shut down after 3 full runs
 		elif ps.data <= 98: #turn on charging from grid power
 			state = 1
-
-		print('setting state to ' + str(state))
-		dl.setState(state)
+			firstRun = False
+			
+		if state != -1:
+			print('setting state to ' + str(state))
+			dl.setState(state)
 	except:
 		print('actuating error')
 
@@ -85,6 +95,7 @@ def packageData(data):
 		pData = {}
 
 		pData['time'] = [datetime.now()]
+		pData['run'] = [run]
 		pData['battery'] = [data['Power Station']['total_battery_percent']]
 		pData['ac_out'] = [data['Power Station']['ac_output_power']]
 		pData['ac_in'] = [data['Power Station']['ac_input_power']]
