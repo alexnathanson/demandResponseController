@@ -74,22 +74,23 @@ def packageData(data):
 	try:
 		pData = {}
 
-		pData['battery'] = data['Power Station']['total_battery_percent']
-		pData['ac_out'] = data['Power Station']['ac_output_power']
-		pData['ac_in'] = data['Power Station']['ac_input_power']
-		pData['dc_out'] = data['Power Station']['dc_output_power']
-		pData['dc_in'] = data['Power Station']['dc_input_power']
-		pData['r1'] = data['R1']
+		pData['time'] = [datetime.now()]
+		pData['battery'] = [data['Power Station']['total_battery_percent']]
+		pData['ac_out'] = [data['Power Station']['ac_output_power']]
+		pData['ac_in'] = [data['Power Station']['ac_input_power']]
+		pData['dc_out'] = [data['Power Station']['dc_output_power']]
+		pData['dc_in'] = [data['Power Station']['dc_input_power']]
+		pData['r1'] = [data['R1']]
 		if ina260 != False:
-			pData['pv'] = data['PV']['power W']
+			pData['pv'] = [data['PV']['power W']]
 		else:
-			pData['pv'] = False
+			pData['pv'] = [False]
 		if ina219 != False:
-			pData['rpi']=data['RPi']['power W']
+			pData['rpi']=[data['RPi']['power W']]
 		else:
-			pData['rpi']= False
-		pData['load'] = data['CT']['current A'] * 120 #convert CT Irms to W
-		
+			pData['rpi']= [False]
+		pData['load'] = [data['CT']['current A'] * 120] #convert CT Irms to W
+
 		#dict to dataframe
 		pData = pd.DataFrame.from_dict(pData)
 	except:
