@@ -43,13 +43,16 @@ except:
 
 async def actuate(freq):
 	#check battery %
-	if ps.data == 100:
-		state = 0
-	else:
-		state = 1
+	try:
+		if ps.data == 100: #turn off charging from grid power
+			state = 0
+		elif ps.data <= 98: #turn on charging from grid power
+			state = 1
 
-	print('setting state to ' + str(state))
-	dl.setState(state)
+		print('setting state to ' + str(state))
+		dl.setState(state)
+	except:
+		print('actuating error')
 
 	await asyncio.sleep(freq)
 
@@ -116,7 +119,7 @@ async def main():
 
 	t3 = asyncio.create_task(ct.run(10))
 	t4 = asyncio.create_task(log(60)) #writes or sends data
-	t5 = asyncio.create_task(actuate(60))
+	t5 = asyncio.create_task(actuate(30))
 	t6 = asyncio.create_task(ps.run(60))
 	#t7 = asyncio.create_task(mqtt.start())
 	
