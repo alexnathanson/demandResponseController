@@ -61,7 +61,8 @@ async def actuate(freq):
 		if state != -1:
 			print('setting state to ' + str(state))
 			dl.setState(state)
-	except:
+	except e as Exception:
+		print(e)
 		print('actuating error')
 
 	await asyncio.sleep(freq)
