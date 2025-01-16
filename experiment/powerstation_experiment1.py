@@ -17,6 +17,9 @@ import pandas as pd
 
 timezone = timezone('US/Eastern')
 
+#start time for experiment is also the name of the file
+expStart = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
+
 myMac = 'DC:8A:6F:FD:79:66'
 
 dl = DL()
@@ -84,6 +87,10 @@ def packageData(data):
 	else:
 		pData['rpi']= False
 	pData['load'] = data['CT']['current A'] * 120 #convert CT Irms to W
+	
+	#dict to dataframe
+	pData = pd.DataFrame.from_dict(pData)
+
 	return pData
 
 async def main():
@@ -113,8 +120,8 @@ async def main():
 def writeData(newDf):
     # create a new file daily to save data
     # or append if the file already exists
-    print("writing data at " + str(date.now.strftime("%d-%m-%Y_%H-%M-%S")))
-    fileName = 'experiment/outputs/exp1_'+str(date.now.strftime("%d-%m-%Y_%H-%M-%S"))+'.csv'
+    print("writing data at " + datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
+    fileName = 'experiment/outputs/exp1_'+ expStart +'.csv'
 
     try:
         with open(fileName) as csvfile:

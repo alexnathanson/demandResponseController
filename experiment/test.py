@@ -5,7 +5,7 @@ import time
 import pandas as pd
 
 print("writing data")
-fileName = 'experiment/outputs/exp1_'+str(date.today())+'.csv'
+fileName = 'experiment/outputs/exp1_'+ datetime.now().strftime("%d-%m-%Y_%H-%M-%S")+'.csv'
 print(fileName)
 
 newDf = {}
