@@ -59,11 +59,9 @@ async def actuate(freq):
 			firstRun = False
 			
 		if state != -1:
-			print('setting state to ' + str(state))
 			dl.setState(state)
 	except Exception as e:
 		print(e)
-		print('actuating error')
 
 	await asyncio.sleep(freq)
 
@@ -91,7 +89,6 @@ async def log(freq):
 		await asyncio.sleep(freq)
 
 def packageData(data):
-	print("packaging data...")
 	try:
 		pData = {}
 
@@ -113,11 +110,11 @@ def packageData(data):
 			pData['rpi']= [False]
 		pData['load'] = [data['CT']['current A'] * 120] #convert CT Irms to W
 
+		print(pData)
 		#dict to dataframe
 		pData = pd.DataFrame.from_dict(pData)
 	except Exception as e:
 		print(e)
-		print('packaging problems')
 		pData = pd.DataFrame()
 
 	return pData
