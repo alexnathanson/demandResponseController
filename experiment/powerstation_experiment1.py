@@ -57,7 +57,8 @@ async def actuate(freq):
 		elif ps.data['total_battery_percent'] <= 98: #turn on charging from grid power
 			state = 0
 			firstRun = False
-			
+
+		print(state)
 		if state != -1:
 			dl.setState(state)
 	except Exception as e:
@@ -85,7 +86,7 @@ async def log(freq):
 		print(allData)
 
 		#mqtt.publish(packageData(allData))
-		writeData(packageData(allData))
+		#writeData(packageData(allData))
 		await asyncio.sleep(freq)
 
 def packageData(data):
@@ -121,18 +122,18 @@ def packageData(data):
 	return pData
 
 async def main():
-
+	frequency = 30
 	#if these are at a higher frequency they should be averaged
 	#instead of spitting out so much data
 	if ina219 != False:
-		t1 = asyncio.create_task(ina219.run(60))
+		t1 = asyncio.create_task(ina219.run(frequency))
 	if ina260 != False:
-		t2 = asyncio.create_task(ina260.run(60))
+		t2 = asyncio.create_task(ina260.run(frequency))
 
-	t3 = asyncio.create_task(ct.run(60))
-	t4 = asyncio.create_task(log(60)) #writes or sends data
-	t5 = asyncio.create_task(actuate(60))
-	t6 = asyncio.create_task(ps.run(60))
+	t3 = asyncio.create_task(ct.run(frequency))
+	t4 = asyncio.create_task(log(frequency)) #writes or sends data
+	t5 = asyncio.create_task(actuate(frequency))
+	t6 = asyncio.create_task(ps.run(frequency))
 	#t7 = asyncio.create_task(mqtt.start())
 	
 	if ina219 != False:
