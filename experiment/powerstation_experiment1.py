@@ -59,7 +59,6 @@ async def actuate(freq):
 				state = 1
 				firstRun = False
 
-			print(state)
 			if state != -1:
 				dl.setState(state)
 		except Exception as e:
@@ -84,10 +83,10 @@ async def log(freq):
 			allData['PV'] = ina260.data # current, voltage, power
 		allData['Relay'] = dl.state #
 
-		print(allData)
+		#print(allData)
 
 		#mqtt.publish(packageData(allData))
-		#writeData(packageData(allData))
+		writeData(packageData(allData))
 		await asyncio.sleep(freq)
 
 def packageData(data):
