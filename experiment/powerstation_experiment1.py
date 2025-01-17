@@ -95,7 +95,7 @@ def packageData(data):
 		pData = {}
 
 		pData['time'] = [datetime.now()]
-		pData['run'] = [run]
+		pData['runNum'] = [runNum]
 		pData['battery'] = [data['Power Station']['total_battery_percent']]
 		pData['ac_out'] = [data['Power Station']['ac_output_power']]
 		pData['ac_in'] = [data['Power Station']['ac_input_power']]
