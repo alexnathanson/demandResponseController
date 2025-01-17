@@ -85,7 +85,7 @@ async def log(freq):
 		#print(allData)
 
 		#mqtt.publish(packageData(allData))
-		writeData(packageData(allData))
+		await writeData(packageData(allData))
 		await asyncio.sleep(freq)
 
 def packageData(data):
