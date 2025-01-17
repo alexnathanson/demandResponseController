@@ -21,7 +21,7 @@ timezone = timezone('US/Eastern')
 expStart = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
 print('Starting experiment at ' + expStart)
 
-run = 1 # experiment run count
+runNum = 1 # experiment run count
 firstRun = True
 
 myMac = 'DC:8A:6F:FD:79:66'
@@ -52,10 +52,10 @@ async def actuate(freq):
 			if ps.data['total_battery_percent'] == 100: #turn off charging from grid power
 				state = 0
 				if firstRun == False:
-					run = run + 1 #starts at 100%, goes to 20%
-					if run >= 4:
+					runNum = runNum + 1 #starts at 100%, goes to 20%
+					if runNum >= 4:
 						exit(1) #shut down after 3 full runs
-			elif ps.data['total_battery_percent'] <= 98: #turn on charging from grid power
+			elif ps.data['total_battery_percent'] <= 99: #turn on charging from grid power
 				state = 1
 				firstRun = False
 
@@ -73,7 +73,7 @@ async def log(freq):
 	}
 
 	while True:
-
+		#collect all the data
 		allData['CT'] = ct.data # current
 		allData['Power Station'] = ps.data #battery %, power, etc
 
