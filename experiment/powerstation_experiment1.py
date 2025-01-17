@@ -61,7 +61,7 @@ async def actuate(freq):
 		if state != -1:
 			print('setting state to ' + str(state))
 			dl.setState(state)
-	except e as Exception:
+	except Exception as e:
 		print(e)
 		print('actuating error')
 
