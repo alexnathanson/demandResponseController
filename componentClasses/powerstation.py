@@ -50,6 +50,7 @@ class BluettiAC180():
             print('Waiting for connection...')
             await asyncio.sleep(1)
             continue
+        print('Bluetti device is ready')
 
         # Poll device
         while True:
