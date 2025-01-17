@@ -48,13 +48,13 @@ async def actuate(freq):
 	#check battery %
 	try:
 		state = -1
-		if ps.data == 100: #turn off charging from grid power
+		if ps.data['total_battery_percent'] == 100: #turn off charging from grid power
 			state = 0
 			if firstRun == False:
 				run = run + 1 #starts at 100%, goes to 20%
 				if run >= 4:
 					exit(1) #shut down after 3 full runs
-		elif ps.data <= 98: #turn on charging from grid power
+		elif ps.data['total_battery_percent'] <= 98: #turn on charging from grid power
 			state = 1
 			firstRun = False
 			
@@ -115,7 +115,8 @@ def packageData(data):
 
 		#dict to dataframe
 		pData = pd.DataFrame.from_dict(pData)
-	except:
+	except Exception as e:
+		print(e)
 		print('packaging problems')
 		pData = pd.DataFrame()
 
