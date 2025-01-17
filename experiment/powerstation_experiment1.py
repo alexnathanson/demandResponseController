@@ -82,7 +82,7 @@ async def log(freq):
 			allData['PV'] = ina260.data # current, voltage, power
 		allData['R1'] = dl.state #
 
-		#print(allData)
+		print(allData)
 
 		#mqtt.publish(packageData(allData))
 		await writeData(packageData(allData))
@@ -110,7 +110,7 @@ def packageData(data):
 			pData['rpi']= [False]
 		pData['ct'] = [data['CT']['current A'] * 120] #convert CT Irms to W
 
-		print(pData)
+		#print(pData)
 		#dict to dataframe
 		pData = pd.DataFrame.from_dict(pData)
 	except Exception as e:
