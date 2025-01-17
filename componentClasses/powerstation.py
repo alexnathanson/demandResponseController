@@ -56,7 +56,7 @@ class BluettiAC180():
             for command in device.logging_commands:
                 commandResponse = await self.log_command(client, device, command)
                 for k,v in commandResponse.items():
-                    print(k + ": " + str(v))
+                    #print(k + ": " + str(v))
                     self.data[k]=v
             await asyncio.sleep(freq)
     

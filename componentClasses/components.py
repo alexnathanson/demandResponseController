@@ -26,7 +26,7 @@ class INA():
 	async def run(self, freq=10):
 		while True:
 			self.getData()
-			print(self.data)
+			#print(self.data)
 			await asyncio.sleep(freq)
 
 

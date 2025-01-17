@@ -99,7 +99,7 @@ def packageData(data):
 		pData['ac_in'] = [data['Power Station']['ac_input_power']]
 		pData['dc_out'] = [data['Power Station']['dc_output_power']]
 		pData['dc_in'] = [data['Power Station']['dc_input_power']]
-		pData['r1'] = [data['R1']]
+		pData['relay'] = [data['R1']]
 		if ina260 != False:
 			pData['pv'] = [data['PV']['power W']]
 		else:
@@ -108,7 +108,7 @@ def packageData(data):
 			pData['rpi']=[data['RPi']['power W']]
 		else:
 			pData['rpi']= [False]
-		pData['load'] = [data['CT']['current A'] * 120] #convert CT Irms to W
+		pData['ct'] = [data['CT']['current A'] * 120] #convert CT Irms to W
 
 		print(pData)
 		#dict to dataframe

@@ -60,7 +60,8 @@ class Current_Transformer:
     async def run(self, freq=10):
         print('looping CT...')
         while True:
-            print("Irms: {} Amps".format(str(self.irms())))
+            self.irms()
+            #print("Irms: {} Amps".format(str(self.irms())))
             await asyncio.sleep(freq)
 
 def main():
