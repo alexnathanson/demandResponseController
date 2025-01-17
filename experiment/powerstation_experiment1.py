@@ -80,15 +80,16 @@ async def log(freq):
 			allData['RPi'] = ina219.data # current, voltage, power
 		if ina260 != False:
 			allData['PV'] = ina260.data # current, voltage, power
-		allData['R1'] = dl.state #
+		allData['Relay'] = dl.state #
 
 		print(allData)
 
 		#mqtt.publish(packageData(allData))
-		await writeData(packageData(allData))
+		writeData(packageData(allData))
 		await asyncio.sleep(freq)
 
 def packageData(data):
+	print('packaging data...')
 	try:
 		pData = {}
 
@@ -99,7 +100,7 @@ def packageData(data):
 		pData['ac_in'] = [data['Power Station']['ac_input_power']]
 		pData['dc_out'] = [data['Power Station']['dc_output_power']]
 		pData['dc_in'] = [data['Power Station']['dc_input_power']]
-		pData['relay'] = [data['R1']]
+		pData['relay'] = [data['Relay']]
 		if ina260 != False:
 			pData['pv'] = [data['PV']['power W']]
 		else:
@@ -110,7 +111,7 @@ def packageData(data):
 			pData['rpi']= [False]
 		pData['ct'] = [data['CT']['current A'] * 120] #convert CT Irms to W
 
-		#print(pData)
+		print(pData)
 		#dict to dataframe
 		pData = pd.DataFrame.from_dict(pData)
 	except Exception as e:
@@ -144,7 +145,7 @@ async def main():
 	await t6
 	#await t7
 
-async def writeData(newDf):
+def writeData(newDf):
     # create a new file daily to save data
     # or append if the file already exists
     print("writing data at " + datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
