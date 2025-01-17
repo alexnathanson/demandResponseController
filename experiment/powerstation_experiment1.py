@@ -158,20 +158,20 @@ async def main():
 def writeData(newDf):
     # create a new file daily to save data
     # or append if the file already exists
-    print("writing data at " + datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
     fileName = 'experiment/outputs/exp1_'+ expStart +'.csv'
-
+    print("writing data to " + fileName)
+    
     try:
         with open(fileName) as csvfile:
             df = pd.read_csv(fileName)
             df = pd.concat([df,newDf], ignore_index = True)
             #df = df.append(newDf, ignore_index = True)
             df.to_csv(fileName, sep=',',index=False)
-    except Exception as e:
-        print(e)
+    except:
+        #print(e)
         newDf.to_csv(fileName, sep=',',index=False)
     print('done writing')
-    
+
 @atexit.register
 def cleanup():
 	dl.cleanup()
