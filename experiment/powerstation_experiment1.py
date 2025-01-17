@@ -21,7 +21,7 @@ timezone = timezone('US/Eastern')
 expStart = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
 print('Starting experiment at ' + expStart)
 
-runNum = 1 # experiment run count
+runNum = 0 # experiment run count
 
 myMac = 'DC:8A:6F:FD:79:66'
 
@@ -43,23 +43,29 @@ except:
 	print('INA260 device not found')
 	ina260 = False
 
+#this assumes the battery starts at 100% when the program is run
 async def actuate(freq):
-	global runNum
-	firstRun = True
+	global runNum #starts at 0
+	oneInc = False #one increment per run
 
 	#check battery %
 	while True:
 		try:
 			state = -1
-			if ps.data['total_battery_percent'] == 100: #turn off charging from grid power
+			 #turn off charging from grid power if battery is full
+			if ps.data['total_battery_percent'] == 100:
 				state = 0
-				if firstRun == False:
+				#if its not the first run
+				if oneInc == False:
 					runNum = runNum + 1 #starts at 100%, goes to 20%
+					oneInc = True;
 					if runNum >= 4:
-						exit(1) #shut down after 3 full runs
-			elif ps.data['total_battery_percent'] <= 99: #turn on charging from grid power
+						exit(0) #shut down after 3 full runs
+			# turn on charging from grid power if below threshold,
+			# and keep on until 100%
+			elif ps.data['total_battery_percent'] <= 99: 
 				state = 1
-				firstRun = False
+				oneInc = False
 
 			if state != -1:
 				dl.setState(state)
