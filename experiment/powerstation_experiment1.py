@@ -160,7 +160,8 @@ def writeData(newDf):
     # or append if the file already exists
     fileName = 'experiment/outputs/exp1_'+ expStart +'.csv'
     print("writing data to " + fileName)
-    
+
+	#os.makedirs('experiment/outputs', exist_ok=True)  
     try:
         with open(fileName) as csvfile:
             df = pd.read_csv(fileName)
