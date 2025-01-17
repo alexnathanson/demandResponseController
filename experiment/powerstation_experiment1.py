@@ -50,6 +50,7 @@ async def actuate(freq):
 
 	#check battery %
 	while True:
+		print(runNum)
 		try:
 			state = -1
 			 #turn off charging from grid power if battery is full
@@ -64,7 +65,7 @@ async def actuate(freq):
 			# turn on charging from grid power if below threshold,
 			# and keep on until 100%
 			elif ps.data['total_battery_percent'] <= 99: 
-				state = 1
+				state = 1 
 				oneInc = False
 
 			if state != -1:
@@ -169,7 +170,8 @@ def writeData(newDf):
     except Exception as e:
         print(e)
         newDf.to_csv(fileName, sep=',',index=False)
-
+    print('done writing')
+    
 @atexit.register
 def cleanup():
 	dl.cleanup()
