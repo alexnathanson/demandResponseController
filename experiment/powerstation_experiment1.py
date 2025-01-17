@@ -46,25 +46,26 @@ except:
 
 async def actuate(freq):
 	#check battery %
-	try:
-		state = -1
-		if ps.data['total_battery_percent'] == 100: #turn off charging from grid power
-			state = 1
-			if firstRun == False:
-				run = run + 1 #starts at 100%, goes to 20%
-				if run >= 4:
-					exit(1) #shut down after 3 full runs
-		elif ps.data['total_battery_percent'] <= 98: #turn on charging from grid power
-			state = 0
-			firstRun = False
+	while True:
+		try:
+			state = -1
+			if ps.data['total_battery_percent'] == 100: #turn off charging from grid power
+				state = 1
+				if firstRun == False:
+					run = run + 1 #starts at 100%, goes to 20%
+					if run >= 4:
+						exit(1) #shut down after 3 full runs
+			elif ps.data['total_battery_percent'] <= 98: #turn on charging from grid power
+				state = 0
+				firstRun = False
 
-		print(state)
-		if state != -1:
-			dl.setState(state)
-	except Exception as e:
-		print(e)
+			print(state)
+			if state != -1:
+				dl.setState(state)
+		except Exception as e:
+			print(e)
 
-	await asyncio.sleep(freq)
+		await asyncio.sleep(freq)
 
 # this packages up all the data
 # freq determines how often data should be logged
