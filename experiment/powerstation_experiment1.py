@@ -50,7 +50,6 @@ async def actuate(freq):
 
 	#check battery %
 	while True:
-		print(runNum)
 		try:
 			state = -1
 			 #turn off charging from grid power if battery is full
@@ -64,7 +63,7 @@ async def actuate(freq):
 						exit(0) #shut down after 3 full runs
 			# turn on charging from grid power if below threshold,
 			# and keep on until 100%
-			elif ps.data['total_battery_percent'] <= 99: 
+			elif ps.data['total_battery_percent'] <= 20: 
 				state = 1 
 				oneInc = False
 
@@ -161,7 +160,6 @@ def writeData(newDf):
     fileName = 'experiment/outputs/exp1_'+ expStart +'.csv'
     print("writing data to " + fileName)
 
-	#os.makedirs('experiment/outputs', exist_ok=True)  
     try:
         with open(fileName) as csvfile:
             df = pd.read_csv(fileName)
@@ -171,7 +169,7 @@ def writeData(newDf):
     except:
         #print(e)
         newDf.to_csv(fileName, sep=',',index=False)
-    print('done writing')
+    #print('done writing')
 
 @atexit.register
 def cleanup():
