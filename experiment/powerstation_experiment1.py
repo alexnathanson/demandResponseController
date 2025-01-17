@@ -22,7 +22,6 @@ expStart = datetime.now().strftime("%d-%m-%Y_%H-%M-%S")
 print('Starting experiment at ' + expStart)
 
 runNum = 1 # experiment run count
-firstRun = True
 
 myMac = 'DC:8A:6F:FD:79:66'
 
@@ -45,6 +44,9 @@ except:
 	ina260 = False
 
 async def actuate(freq):
+	global runNum
+	firstRun = True
+
 	#check battery %
 	while True:
 		try:
