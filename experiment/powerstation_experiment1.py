@@ -124,15 +124,16 @@ def packageData(data):
 
 async def main():
 
+	#if these are at a higher frequency they should be averaged
+	#instead of spitting out so much data
 	if ina219 != False:
-		t1 = asyncio.create_task(ina219.run(5))
-
+		t1 = asyncio.create_task(ina219.run(60))
 	if ina260 != False:
-		t2 = asyncio.create_task(ina260.run(5))
+		t2 = asyncio.create_task(ina260.run(60))
 
-	t3 = asyncio.create_task(ct.run(10))
+	t3 = asyncio.create_task(ct.run(60))
 	t4 = asyncio.create_task(log(60)) #writes or sends data
-	t5 = asyncio.create_task(actuate(30))
+	t5 = asyncio.create_task(actuate(60))
 	t6 = asyncio.create_task(ps.run(60))
 	#t7 = asyncio.create_task(mqtt.start())
 	
@@ -146,7 +147,7 @@ async def main():
 	await t6
 	#await t7
 
-def writeData(newDf):
+async def writeData(newDf):
     # create a new file daily to save data
     # or append if the file already exists
     print("writing data at " + datetime.now().strftime("%d-%m-%Y_%H-%M-%S"))
