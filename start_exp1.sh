@@ -9,10 +9,13 @@ sleep 60
 
 echo "Done waiting... activating venv"
 
-#replace 'alex' with your user name
-source /home/alex/demandResponseController/.venv/bin/activate
+#replace 'alex' with your user 
+
+cd /home/alex/demandResponseController
+
+source .venv/bin/activate
 
 echo "Starting Demand Response Controller Experiment"
 
-echo "view error logs at demandResponseController/runner.log"
+echo "view additional error logs at demandResponseController/experiment/runner.log"
 python /home/alex/demandResponseController/experiment/powerstation_experiment1.py  > /home/alex/demandResponseController/experiment/runner.log 2>&1 &
