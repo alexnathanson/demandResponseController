@@ -1,6 +1,7 @@
 #source https://github.com/warhammerkid/bluetti_mqtt/blob/main/bluetti_mqtt/discovery_cli.py
 
 import asyncio
+import json
 from bleak import BleakError, BleakScanner
 
 async def scan_devices():

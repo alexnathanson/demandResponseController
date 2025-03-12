@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Shelly1PMG3-5432045886C8",
+        "address": "54:32:04:58:86:CA",
+        "manufacturer": "shelly",
+        "rssi": -32,
+        "timestamp": "2025-03-11T20:26:25.906309"
+    },
+    {
+        "name": "ShellyPlus1PM-B8D61A8897D4",
+        "address": "B8:D6:1A:88:97:D6",
+        "manufacturer": "shelly",
+        "rssi": -36,
+        "timestamp": "2025-03-11T20:26:24.850555"
+    },
+    {
+        "name": "AC1802339003249506",
+        "address": "DC:8A:6F:FD:79:66",
+        "manufacturer": "bluetti",
+        "rssi": -38,
+        "timestamp": "2025-03-11T20:26:26.014463"
+    }
+]
