@@ -15,10 +15,20 @@ from bleak import BleakClient, BleakError, BleakScanner
 from bleak.backends.device import BLEDevice
 from bleak.backends.scanner import AdvertisementData
 
+
+############### POSITIONS ######################
+# Numbers indicate position of relay and sensor in system
+#
+#     +--2--[BAT]--4--+
+# ----|               [TRANSFER SWITCH]--3-->
+#     +-------1-------+
+#
+################################################
+
 class ShellyDevice:
     """Represents a Shelly BLE device and handles RPC communication."""
 
-    def __init__(self, address: str):
+    def __init__(self, address: str, channel: int, position: int):
         self.address = address
         self.shelly_service = None
         self.data_char = None
@@ -29,6 +39,9 @@ class ShellyDevice:
         self.RPC_CHAR_TX_CTL_UUID = "5f6d4f53-5f52-5043-5f74-785f63746c5f"
         self.RPC_CHAR_RX_CTL_UUID = "5f6d4f53-5f52-5043-5f72-785f63746c5f"
         self.ALLTERCO_MFID = 0x0BA9  # Manufacturer ID for Shelly devices
+        self.relayChannel = channel
+        self.positions = ['grid', 'load']
+        self.position = 
 
     async def call_rpc(
         self,

@@ -22,7 +22,6 @@ else:
     myPort = 1883
 
 timezone = timezone('US/Eastern')
-
 network = "BoroughHall"
 
 class EnergyController:
