@@ -83,7 +83,7 @@ class EnergyController:
             update = True
             if update:
                 timestamp = datetime.now(timezone).strftime("%Y-%m-%d %H:%M:%S")
-                self.client.publish("OpenDemandResponse/Event/BoroughHall", payload="#".join([event, event_type, str(start_time), timestamp]), qos=0, retain=False)
+                self.client.publish("OpenDemandResponse/Event/crownheights", payload="#".join([event, event_type, str(start_time), timestamp]), qos=0, retain=False)
 
             time.sleep(freq)
     
